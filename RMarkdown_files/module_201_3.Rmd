@@ -1,0 +1,357 @@
+---
+title: "R for Biochemists 201 Module 3 - Using R Markdown for reproducible data analysis"
+author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
+date: "August 2020"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+  word_document: default
+---
+
+### Welcome to the third R for Biochemists 201 Training module.
+
+Each module is designed to take approximately 60 minutes to complete. 
+
+The material provided includes text to read, video demonstrations, an example R
+script with exercises. We hope you enjoy the modules. We welcome feedback and
+comments. 
+
+### How to use this module 
+1. To learn from this module, watch the video and open a new R Markdown file. 
+2. Look at the file and see if you can understand the different parts of the file
+3. Write some text and Knit your file to HTML
+4. Watch the demonstration videos to see how you can change the file
+5. Change the file, Knit to see the changes in the output
+6. Play and repeat
+7. Try the exercises
+8. Extend your learning using the resources at the end
+
+### Learning Objectives for Module 3
+* Open an R Markdown file, edit it and create output 
+* Add text and formatting to an R Markdown file
+* Add new R code to an R Markdown file
+* Create output of different types from your R Markdown files
+
+The aim of this module is to introduce R Markdown. A workflow that allows
+us to mix text, data analysis and visualisations in a way that allows us to 
+output and share what we make. 
+As part of this workflow, the tidyverse steps of importing, tidying, 
+transforming, visualising, modelling and communicating will be followed. This
+module builds on the previous modules with a focus on communicating your data 
+in a reproducible way. 
+
+### First step - open your first R Markdown file
+##### First video - opening, editing and outputting an R Markdown file 
+
+* Go to the _File_ menu
+* Select _New File_
+* Go to _R Markdown..._
+
+A dialog box will ask you to complete title, author and to select the 
+default output options. 
+I recommend that you add a meaningful title. For example, you could add a title
+"module_3".
+I recommend that you select HTML in the first instance.
+Output format can be changed at a later date. 
+
+#### The R Markdown file has three parts:
+1. A Header surrounded by three dashes "---"
+2. Text 
+3. R code blocks or chunks surrounded by special quote marks
+
+#### Knit your first R Markdown file
+At the top of the R-Studio window you will see a _Knit_ button. Press this and
+you will be invited to _Save_ your R Markdown file and output will be produced. 
+If you go to your file system, you will notice that a .html file has been
+created. This has the same name as your R Markdown file which ends with .Rmd. 
+This html file can be opened by a browser like Google Chrome if you double
+click the file. Thus you can now share your analysis with a collegue even if
+they don't have R or any knowledge of R. All they need is a browser. 
+
+### Second step - some text options 
+The advanage of R Markdown is that we can mix text that gives 
+context to our analysis as well as code that will perform the analysis. 
+
+The text options are quite simple. 
+
+#### Headers
+You can add headers of different levels
+one # is the top level header all the way down to six levels of header. 
+
+#### Bold and italic
+Using the asterix give *text in bold* using underscore _gives text in italics_
+
+#### Lists with numbers or bullets
+We can add unordered lists with asterix _*_ and ordered list with numbers. 
+
+##### R for Data Science workflow
+* Import data
+* Tidy data
+* Visualise data
+
+#### Weblinks and images
+Using greater than and less than allows the inclusion of web links.
+For example:
+Check out the R Markdown cheatsheet for more information 
+<https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf>
+
+We can add a linked phrase to my [R for Biochemists website](http://rforbiochemists.blogspot.com/)
+
+We can add images from the web or locally with a path
+image: ![](https://github.com/brennanpincardiff/RforBiochemists/blob/master/R_for_Biochemists_101/chromatography_plots/Rplot.png?raw=true)
+
+
+### Exercise 1
+Please test your knowledge by creating a new R Markdown file.
+
+- Select your favourite protein...
+- Add some information about it...
+- Add some links about it...
+- Add a picture of it from somewhere
+
+
+### Answers for Exercise 1
+A video showing you how I did this...
+
+### Let's analyse some data in your R Markdown file
+We are going to continue with data from the 2019 Nature publication by Croft 
+et al. The data is available online and can be imported directly into R for 
+analysis. The authors have analysed fibroblast subsets and how they contribute
+to arthritis in a mouse model. 
+I will put in a workflow for Figure 1h which is a linear fitting of data...
+
+Note that we add text and then put the R code surrounded by these three ticks...
+We can add titles to the R code to tell us what it does. These titles need to 
+be unique to that R code. They can help identifying problems with our code. 
+
+##### Another video - data analysis in R Markdown file
+First, activate the packages we need. Note that we are adding message = FALSE
+for the R code. This will make the document easier to read. 
+```{r packages_we_need, message=FALSE}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(ggpubr)
+```
+
+pagebreak \pagebreak
+
+As before, the title of the paper is:
+"Distinct fibroblast subsets drive inflammation and damage in arthritis""
+Copies are available here:
+[Online](https://www.nature.com/articles/s41586-019-1263-7)
+[PDF](https://www.nature.com/articles/s41586-019-1263-7.pdf)
+Also in [Biorxiv as preprint](https://www.biorxiv.org/content/10.1101/374330v1)
+
+Continuing our exploration of the data in
+[Figure 1](https://www.nature.com/articles/s41586-019-1263-7/figures/1).
+
+The workflow: 
+
+1. Import the data
+2. Tidy our data (also known as wrangling or munging)
+3. Transform or summarise
+4. Visualize
+
+
+### Importing the data in R
+
+```{r download_data_for_Fig_1h}
+link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx"
+
+# the download.file() function downloads and saves the file with the name given
+download.file(url=link, destfile="file.xlsx", mode="wb")
+
+# get worksheet names 
+sheet_names <- excel_sheets("file.xlsx")
+```
+
+The name of the sheet we're going to download is **`r sheet_names[4]`**. This
+also shows how we can add some in-line R code. 
+
+We can create a little test using an if() statement but we don't need to show
+the code in our document so we can use the echo=FALSE argument to prevent this. 
+```{r test_file_name, echo=FALSE}
+# we can add a little test into our data to ensure we have the correct data.
+if (sheet_names[4] == "Figure 1h") {
+print("We wanted Figure 1h so we have the correct file")
+}else {
+print("I don't think we have the correct file, please check your code...")
+}
+```
+
+Since we are happy with the file, import it...
+I looked at the file in Excel and there is no data on the first line. It is
+best if we skip that line. 
+
+```{r import_data_for_Fig_1h}
+data <- read_excel("file.xlsx", sheet_names[4], skip = 1)
+
+```
+The read_excel function also ignore the blank column. Generally the data looks
+OK. The name of the first column is a bit difficult. Just a little tidying is required. Then, visualise and analyse. 
+
+```{r basic_line_graph}
+# simplify column names for ease...
+colnames(data) <- c("thick", "biolum")
+
+# basic dot plot with a fitted line
+ggplot(data, aes(thick, biolum)) +
+    geom_point() +
+    stat_smooth(method = "lm") 
+```
+
+
+We can customise this graph in a variety of ways. Add titles, limits for 
+the axis and a theme that is similar to the paper. 
+```{r more_customised_line_graph}
+# more detailed dot plot with a fitted line
+ggplot(data, aes(thick, biolum)) +
+    geom_point() +
+    stat_smooth(method = "lm", se = FALSE, color="black") +   
+  xlab("Thickness (mm)") +   # label x-axis
+  ylab("Bioluminescence") +    # label y-axis
+  ggtitle("Croft et al, 2019, Figure 1h") +  # add a title
+  expand_limits(y=c(0,10), x = c(0,2)) +
+  theme_classic()
+```
+
+We have used the 
+[ggpubr package](https://cran.r-project.org/web/packages/ggpubr/)
+to add statistics so we can do the same here. 
+Using the ggscatter() function will draw the plot and add the statistics to the plot.
+
+```{r line_graph_with_stats}
+# stats with ggscatter
+ggscatter(data, x = "thick", y = "biolum",
+    add = "reg.line",  # Add regression line
+    cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+    cor.coeff.args = list(method = "spearman"),
+    xlab = "Thickness (mm)",
+    ylab = "Bioluminesence",
+    ylim = c(0, 10),
+    xlim = c(0,2),
+    title = "Croft et al, 2019, Figure 1h"
+)
+
+```
+
+
+
+### Exercise 2
+Please try this for Figure 1m which is another linear plot. 
+It is the 8th sheet in the downloaded file. 
+
+### Answers for Exercise 2
+```{r, exercise_2}
+data_2 <- read_excel("file.xlsx", sheet_names[8], skip = 1)
+colnames(data_2) <- c("thick", "express")
+
+# you can plot it in ggplot but you will need to calculate the stats 
+# and add them manually
+ggplot(data_2, aes(thick, express)) +
+    geom_point() +
+    stat_smooth(method = "lm", se = FALSE, color="black") +   
+  xlab("Thickness (mm)") +   # label x-axis
+  ylab("mRNA expression") +    # label y-axis
+  ggtitle("Croft et al, 2019, Figure 1h") +  # add a title
+  scale_y_continuous(limits=c(-4,12), breaks=c(-4,-2,0,2,4,6,8,10,12)) +
+  theme_classic()
+```   
+
+Or you can make a graph with ggscatter() but you will need to modify the y-axis
+using scale_y_continuous() afterwards with limits and breads to give the 
+numbers on the axis. 
+
+```{r, more_for_exercise_2}
+# make the plot with ggscatter()
+plot <- ggscatter(data_2, x = "thick", y = "express",
+    add = "reg.line",  # Add regression line
+    cor.coef = TRUE, # Add correlation coefficient. see ?stat_cor
+    cor.coeff.args = list(method = "spearman"),
+    xlab = "Thickness (mm)",
+    ylab = "mRNA expression",
+    xlim = c(0,1.5),
+    title = "Croft et al, 2019, Figure 1m"  # add a title
+)
+# use scale_y_continuous() to alter the y axis 
+plot + scale_y_continuous(limits=c(-4,12), breaks=c(-4,-2,0,2,4,6,8,10,12))
+
+
+
+```
+
+
+pagebreak \pagebreak
+
+
+### Outputs Rmd in various formats....
+##### Third video - Making a presentation
+A useful output method is Presentations. Using isoslides is a good start. 
+As before:
+
+* Go to the _File_ menu
+* Select _New File_
+* Go to _R Markdown..._
+
+Now select Presentation and give the file a name. Trying knitting the sample 
+code and see if you can get it to work. 
+
+Check out my file 
+
+pagebreak \pagebreak
+
+### Exercise 3
+Try to create and share your R journey. 
+Insert some of the code you have written. 
+I have published my story here.
+
+pagebreak \pagebreak
+
+### Answers for Exercise 3
+The Rmd source file for my R journey is here [link]. 
+You can download it, open it in R-Studio.
+Edit it, make it yours and Knit it 
+
+pagebreak \pagebreak
+
+### Code block options
+##### Fourth video - options for code blocks... 
+Three key options:
+    + showing and running the code
+    + hiding and running the code to generate output
+    + showing code but not running (evaluating) 
+
+
+### Review what we have learned
+* We have created R Markdown files.
+* Within our R Mardown file we have: 
+    + imported data
+    + tidied data
+    + visualised data
+    
+* We have generated output:
+    + in html format that can be opened in a browser
+    + Word format that can be printed and shared
+    + with different data in a similar format
+    
+* We have explored the options for code blocks:
+    + showing and running the code
+    + hiding and running the code to generate output
+    + showing code but not running (evaluating) 
+
+### Resources
+* You could move onto Module 4
+* Check out Communicate Data chapters of R for Data Science)<https://r4ds.had.co.nz/communicate-intro.html>
+* All of the text written for R for Biochemists 201
+were created as R Markdown. They are all available on 
+[Github here](https://github.com/brennanpincardiff/R_for_Biochemists_201).
+Have a look... Download, open and Knit.
+* Last year, I wrote a manuscript about the _drawProteins_ package
+all in R Markdown. The document is here and can be openned and Knit if you want
+to play. 
+* Lots more about R Markdown by the creators<https://rmarkdown.rstudio.com/>
+* R Markdown Cheatsheets can be useful <https://rmarkdown.rstudio.com/lesson-15.html>
+* For documentation about YAML see this site<http://ymlthis.r-lib.org/articles/yaml-overview.html>

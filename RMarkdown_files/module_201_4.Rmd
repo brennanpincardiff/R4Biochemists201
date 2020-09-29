@@ -1,0 +1,479 @@
+---
+title: "R for Biochemists 201 Module 4 - Functions"
+author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
+date: "August 2020"
+output: html_document
+---
+
+### Welcome to the fourth R for Biochemists 201 Training module.
+
+Each module is designed to take approximately 60 minutes to complete. 
+
+The material provided includes text to read, video demonstrations, an example R
+script with exercise. We hope you enjoy the modules. We welcome feedback and
+ comments. 
+
+### How to use this module 
+1. To learn from this module, cut and paste the R code into R-Studio and then run the code line by line. 
+2. See if you can make the script work
+3. Watch the demonstration videos to see how the code works
+4. Look at how the 'Global Environment' changes.
+5. Change the code and test it
+6. Try the exercises at the end
+7. Extend your learning using the resources at the end
+
+### Learning Objectives for Module 4
+* Understand & write functions 
+* Document a function
+* Version Control
+* Look at packages 
+
+
+As we deepen our knowledge and usage of R, it becomes useful to create
+functions. Functions can create a workflow, can be combination of other 
+functions or can be a detailed mathematical calculations. 
+
+When are you ready to create a function? Well, if you find yourself using the
+same commands multiple times then it suggests that you could benefit from
+creating a function that brings these together. If you generate data in the 
+same way and analyse in the same way, you could benefit from a workflow that 
+brings together. 
+
+Three is usually the 'magic' number. If you have or plan to repeat the same 
+analysis three times you could probably write better code and reduce your 
+work by writing some functions. 
+
+To create a function, we use the function() function. 
+
+Let's look at Croft Figure 4f.
+
+
+```{r packages_we_need}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+```
+
+pagebreak \pagebreak
+
+### The Experiment
+I have chosen a recent Nature publication by Croft et al. Nature now require
+authors to share their data and these authors have supplied their data as an 
+Excel file. The authors have analysed fibroblast subsets and how they contribute
+to arthritis in a mouse model. 
+
+The title of the paper is:
+"Distinct fibroblast subsets drive inflammation and damage in arthritis""
+Copies are available here:
+[Online](https://www.nature.com/articles/s41586-019-1263-7)
+[PDF](https://www.nature.com/articles/s41586-019-1263-7.pdf)
+Also in [Biorxiv as preprint](https://www.biorxiv.org/content/10.1101/374330v1)
+
+We are going to explore the data in
+[Figure 4](https://www.nature.com/articles/s41586-019-1263-7/figures/1).
+
+The [data is available](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx).
+
+The Excel file has 9 worksheets - each sheet corresponding to a part of the 
+figure. 
+
+Our workflow is 
+1. Import the data
+2. Tidy our data (also known as wrangling or munging)
+3. Transform or summarise
+4. Visualize
+
+
+
+
+### Writing functions
+##### First video - writing your first function... 
+```{r get_data_for_Fig_4f}
+link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx"
+
+# the download.file() function downloads and saves the file with the name given
+download.file(url=link, destfile="file.xlsx", mode="wb")
+
+# check worksheet names 
+sheet_names <- excel_sheets("file.xlsx")
+data <- read_excel("file.xlsx", sheet_names[6])
+```
+
+OK so this data doesn't really work. 
+Edit it a bit in Excel as per video...
+
+Save as fig_4f.xlsx
+Import again...
+
+```{r get_easier_data_for_Fig_4f}
+link <- c("https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/data/fig_4f.xlsx?raw=true")
+
+# the download.file() function downloads and saves the file with the name given
+download.file(url=link, destfile="file.xlsx", mode="wb")
+
+data <- read_excel("file.xlsx")
+```
+
+
+Our workflow is basically the same as before. 
+Steps:
+1. Extract cell type we want to plot - this will be an argument of our function
+2. Transform the data
+3. Generate the plot
+4. Customise the plot
+Usually, I try to make it work for one element and then turn it into a function. Once it is a function, I test it on the original data and then use it on the rest. 
+This is the code for our workflow:
+
+
+```{r first_workflow}
+# select out the rows we want with filter() function for "Leucocytes"
+# gather without cell_type and treatment
+# mutate treatment into a factor to plot in the correct order
+data %>% 
+    filter(cell_type =="Leucocytes") %>% 
+    gather(cell_number, mice, -cell_type, -treatment) %>%
+    mutate(treatment = factor(treatment, c("Sham_1", "THY-", "Sham_2","THY+"))) -> data_2
+
+# make the plot
+set.seed(1)   # geom_jitter has a random element so set.seed() makes this same
+plot_l <- ggplot(data = data_2,
+    aes(treatment, mice, colour = treatment)) +
+    geom_boxplot() +
+    geom_jitter(width=0.15) +
+    theme_bw() +
+    labs(title = "Leucocytes", x="", y="",
+         subtitle = "Croft et al (2019) Nature 570:246–251 (2019)") +
+    theme_classic() + theme(legend.position="none")
+
+plot_l
+```
+
+
+
+```{r make_function}
+## make a function called my_workflow
+
+my_workflow <- function(data, a_cell_type){
+    # select out the rows we want with filter() function
+    data %>% 
+        filter(cell_type == a_cell_type) %>% 
+        gather(cell_number, mice, -cell_type, -treatment)  %>%    
+        mutate(treatment = factor(treatment, c("Sham_1", "THY-", "Sham_2","THY+"))) -> data_2
+        
+    # make the plot
+    set.seed(1)
+    plot <- ggplot(data = data_2,
+        aes(treatment, mice, colour = treatment)) +
+        geom_boxplot() +
+        geom_jitter(width=0.15) +
+        theme_bw() +
+        labs(title = a_cell_type, x="", y="",
+             subtitle = "Croft et al (2019) Nature 570:246–251 (2019)") +
+        theme_classic() + theme(legend.position="none")
+    
+    # this returns the plot and is key!  
+    return(plot)
+}
+
+```
+
+Please note here is that a new part has been created in my Global
+Environment entitled Functions. 
+In this is the function called my_workflow.
+
+```{r check_function}
+# check_function
+cell_types <- unique(data$cell_type)
+cell_types[1] # this is Leucocytes and should work...
+leuco_plot <- my_workflow(data, cell_types[1])
+leuco_plot
+
+# do a visual check that the same object as the script above
+```
+
+
+Now use the function to generated two new plots with different cell types. 
+
+```{r use_function}
+# now plot for other cell types
+
+cell_types[2] # this is Leucocytes and should work...
+neutro_plot <- my_workflow(data, cell_types[2])
+macro_plot <- my_workflow(data, cell_types[3])
+
+# now we have three plots all made the same way.
+
+neutro_plot
+macro_plot
+```
+
+
+### Exercise 1
+Please create a function to add the statistical tests that we have used before. 
+As I mentioned, I usually approach this by getting it right for one plot first
+and then test and use the function. 
+There are different ways to do this but do have a play and try to work out
+what to do. 
+
+### Answers for Exercise 1
+Here is an example of a function that will add the statistical tests.
+```{r exercise_1_answer} 
+# us ggpubr
+```
+
+
+
+
+### Our second advanced theme is documentation
+##### Second video - document your function control... 
+
+We can create functions in our script files or R-markdown files. However, 
+if we are using functions across multiple files, we might want to save them
+separately.
+
+To do this, create a new R script file with a meaningful name and cut and paste
+our fuction. In this case we are making a file called `workflow_function.R`
+
+To use the function, the source() function will bring it into the Global
+Environment. 
+```{r bring_in_function, eval=FALSE} 
+source("/Users/paulbrennan/Documents/R_for_Biochemists_201_files/module_201_5_files/workflow_function.R")
+
+```
+
+To help other users or our future selves, we are going to document this
+function. Documentation is key to your collaborators, remembering what
+and why you have done something and if you 
+ever want to share your functions or workflows with others. 
+We could use hash tags but there are other ways to document functions in 
+particular. These use sets of tags called Roxygen tags. 
+There is a short cut that will do this Ctrl+Shift+Alt+R. 
+
+The Roxygen tags use #' and @ symbols. Here is an example:
+
+#' Title
+#'
+#' @param data 
+#' @param a_cell_type 
+#'
+#' @return
+#' @export
+#'
+#' @examples
+
+@param refers to paramaters 
+@return tells you what is returned. 
+@export is necessary if you are including your function in a package. 
+
+We can add more information so that we know what the function does. 
+
+### Exercise 2
+Above I hope that you created your own function to add the statistical tests. 
+Please you add the documentation to that too.
+
+### Answers for Exercise 2
+Here is my example...
+
+
+### Version control
+##### Third video - version control... 
+Version control is a key element of becoming a better programmer. 
+It is a way of recording changes you have made to a script, to a function or
+to a workflow. One of the most commonly used methods is called Git. 
+I just want make a brief mention of Git here. 
+There are lots of other resources to learn more about Git. 
+
+You will need to Sign up on [Github.com](https://github.com/).
+Then you can go to a Git Repository and make a change. 
+I've created a [repo for R for Biochemists 201](https://github.com/brennanpincardiff/R_for_Biochemists_201).
+
+Go to the [favourite_molecules file](https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/favourite_molecules/favourite_molecules.Rmd) on your browser.
+Press the pencil icon and edit the file to add some details of your favourite
+molecule. Commit your change. 
+
+This basic workflow is in a public Git Repository. 
+Your repo can be public or private. For your research you may want a private
+repository. 
+
+This is the basic workflow:
+1. Create a repository or repo.
+2. Make a change
+3. Stage it
+4. Make a comment about the change you made
+5. Commit the change. 
+
+You can do all of this within R-Studio as well as doing it through your browser. 
+
+
+pagebreak \pagebreak
+
+### Exercise 3
+I would like you to try making a change on Github.
+Follow the steps above to add your name and favourite molecule.
+Have a go, you can't do anything wrong. 
+
+Then, try creating your own My_Learning_R prjoect in R-Studio. Link it up to 
+Github and write some code for the analysis of [another bit of data].
+Stage it and commit the change onto Github. 
+
+Share your link in the comments online and you have taken a key next step
+towards being a programmer. 
+
+### Answers for Exercise 3
+Here is another video of how you would go about doing all of this. 
+If you have questions, please use the comments below. 
+
+
+pagebreak \pagebreak
+
+### Packages
+##### Fourth video - packages 
+
+Packages are group of functions that are available to download and explore. 
+There are lots of packages available that you might want to play with. 
+You might even want to adapt these to your own workflows, change functions
+and even contribute to them as your skills develop. 
+
+Sources of packages:
+1. CRAN
+2. Bioconductor
+3. Github
+4. R-OpenSci
+5. Where else
+
+A good place to explore for packages is Bioconductor. These are
+packages for Bioinformatics and can be used to explore biological data.
+
+For example, perhaps you want to look at some flow data. 
+There is a package for that on Bioconductor. 
+You need to install the BiocManager and then install the flowCore package. 
+
+```{r download_from_Bioconductor}
+# install BiocManager
+# install.packages("BiocManager")
+# BiocManager::install("flowCore")
+
+library("flowCore")
+
+# download a flow data file
+link <- "https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/data/A01%20CFSE%20profiles%20Day%203.fcs?raw=true"
+
+download.file(url=link, destfile="file.fcs", mode="wb")
+
+data <-read.FCS("file.fcs", alter.names = TRUE)
+data
+
+n <- as.data.frame(exprs(data))
+
+ggplot(n, aes(x = FL1.H)) + geom_density()
+# open it and plot it...
+
+
+# want two data files with different CFSE profiles....
+```
+
+
+
+
+You can download and use a package from Github. 
+Explore gganatogram as an example. 
+
+```{r download_from_github}
+## install from Github
+# remove the hash tag to run. 
+#devtools::install_github("jespermaag/gganatogram")
+library(gganatogram)
+library(dplyr)
+library(viridis)
+library(gridExtra)
+
+organPlot <- data.frame(organ = c("heart", "leukocyte", "nerve", "brain", "liver", "stomach", "colon"), 
+ type = c("circulation", "circulation",  "nervous system", "nervous system", "digestion", "digestion", "digestion"), 
+ colour = c("red", "red", "purple", "purple", "orange", "orange", "orange"), 
+ value = c(10, 5, 1, 8, 2, 5, 5), 
+ stringsAsFactors=F)
+
+ head(organPlot)
+
+gganatogram(data=organPlot, fillOutline='#a6bddb', organism='human', sex='male', fill="colour")
+
+```
+
+
+### Exercise 4
+Download and draw a brain plot using 
+https://github.com/LCBC-UiO/ggseg
+
+
+### Answers Exercise 4
+```{r download_ggseg}
+# install
+# devtools::install_github("LCBC-UiO/ggseg", build_vignettes = TRUE)
+library(ggseg)
+ggseg(atlas=aseg)
+
+```
+
+It is interesting to check out the details of a package on Github if it
+is there. Here is a the Github repo for
+[gganatogram](https://github.com/jespermaag/gganatogram). By looking at various
+packages you can get a feeling for how they
+are organised. Here is a little about how packages are structured. 
+
+Basic anatomy of a package on Github...
+- Readme
+- Build badge - passing is good.
+- R folder - has the code - you can look at this and adapt.
+- man folder - has the documentation - it is generated by the Roxygen tags.
+- test folder - good packages test their code - the tests are here. 
+- Vignettes - some example code that you can explore. 
+
+
+You can also download all the material from a package as a separate RStudio
+project. This will fork the package and you can play, edit, adapt and make
+changes if you like. 
+
+There is also a very good
+book about [Packages](http://r-pkgs.had.co.nz/) and how they can be organised. 
+
+### Exercise 5
+Download and check out the vignette for drawProteins
+https://github.com/brennanpincardiff/drawProteins
+Use drawProteins to generate a schematic of your favourite protein. 
+
+
+### Answers Exercise 5
+```{r download_drawProteins}
+
+# download drawProteins from Bioconductor
+
+
+# make a picture of your favourite molecule. 
+
+# integrate your learning by adding the information to the Github page we used above
+
+```
+
+
+pagebreak \pagebreak
+
+
+
+
+
+pagebreak \pagebreak
+
+### Review what we have learned
+* We have created a function
+* We have documented our function using Roxygen tags
+* We have learned the basics of version control using Github
+* We have looked and explored packages on Bioconductor and Github
+
+### Resources
+* Writing functions
+* Documenting functions
+* Understanding and getting better at Git
+* Bioconductor
+* Packages book
+
