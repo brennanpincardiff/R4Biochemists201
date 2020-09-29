@@ -1,5 +1,5 @@
 ---
-title: "R for Biochemists 201 Module 4 - Functions"
+title: "R for Biochemists 201 Module 4 - Functions & Packages"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
 date: "August 2020"
 output: html_document
@@ -471,9 +471,10 @@ pagebreak \pagebreak
 * We have looked and explored packages on Bioconductor and Github
 
 ### Resources
-* Writing functions
-* Documenting functions
-* Understanding and getting better at Git
-* Bioconductor
-* Packages book
+* [Software Carpentry piece about writing functions](https://swcarpentry.github.io/r-novice-inflammation/02-func-R/) 
+* [Object documentation](https://r-pkgs.org/man.html) - chapter on documentation
+* [Happy Git and Github for the useR](https://happygitwithr.com/) - helpful advice for using Git with R. 
+* [Bioconductor](http://bioconductor.org/) - lots of bioinformatics resources for R. 
+* [R Open Sci](https://ropensci.org/) - a great resource for open and reproducible science
+* [R Packages](https://r-pkgs.org/) - the definitive book on packages
 
