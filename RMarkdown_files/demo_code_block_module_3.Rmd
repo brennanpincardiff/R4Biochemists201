@@ -1,0 +1,42 @@
+---
+title: "demo_code_block_options"
+author: "Paul Brennan"
+date: "29/09/2020"
+output: html_document
+---
+We can avoid the messages by writing message=FALSE
+
+```{r packages_we_need, message=FALSE}
+library(readxl)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(ggpubr)
+```
+
+We can NOT show the code by echo = FALSE. 
+
+```{r download_data_for_Fig_1h, echo=FALSE}
+link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx"
+
+# the download.file() function downloads and saves the file with the name given
+download.file(url=link, destfile="file.xlsx", mode="wb")
+
+# get worksheet names 
+sheet_names <- excel_sheets("file.xlsx")
+
+data <- read_excel("file.xlsx", sheet_names[4], skip = 1)
+```
+
+
+With eval = TRUE, the code is run. 
+If we change eval=FALSE, the code is not run. 
+```{r colnames, fig.height=3, fig.width=3, message=FALSE}
+# simplify column names for ease...
+colnames(data) <- c("thick", "biolum")
+
+# basic dot plot with a fitted line
+ggplot(data, aes(thick, biolum)) +
+    geom_point() +
+    stat_smooth(method = "lm") 
+```
