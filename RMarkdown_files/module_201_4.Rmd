@@ -477,4 +477,3 @@ pagebreak \pagebreak
 * [Bioconductor](http://bioconductor.org/) - lots of bioinformatics resources for R. 
 * [R Open Sci](https://ropensci.org/) - a great resource for open and reproducible science
 * [R Packages](https://r-pkgs.org/) - the definitive book on packages
-
