@@ -5,7 +5,7 @@ date: "August 2020"
 output: html_document
 ---
 
-### Welcome to the fourth R for Biochemists 201 Training module.
+### Welcome to Module 4 of the R for Biochemists 201 Training module.
 
 Each module is designed to take approximately 60 minutes to complete. 
 
@@ -71,14 +71,15 @@ Copies are available here:
 Also in [Biorxiv as preprint](https://www.biorxiv.org/content/10.1101/374330v1)
 
 We are going to explore the data in
-[Figure 4](https://www.nature.com/articles/s41586-019-1263-7/figures/1).
+[Figure 4f](https://www.nature.com/articles/s41586-019-1263-7/figures/4).
 
-The [data is available](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx).
+The [data is available](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx).
 
-The Excel file has 9 worksheets - each sheet corresponding to a part of the 
-figure. 
+The Excel file has 9 worksheets - each sheet corresponding to a part of 
+Figure 4. 
 
-Our workflow is 
+Our workflow is:
+
 1. Import the data
 2. Tidy our data (also known as wrangling or munging)
 3. Transform or summarise
@@ -107,7 +108,7 @@ Save as fig_4f.xlsx
 Import again...
 
 ```{r get_easier_data_for_Fig_4f}
-link <- c("https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/data/fig_4f.xlsx?raw=true")
+link <- c("https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/fig_4f.xlsx?raw=true")
 
 # the download.file() function downloads and saves the file with the name given
 download.file(url=link, destfile="file.xlsx", mode="wb")
