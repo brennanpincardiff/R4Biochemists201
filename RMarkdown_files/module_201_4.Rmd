@@ -3,6 +3,8 @@ title: "R for Biochemists 201 Module 4 - Functions & Packages"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
 date: "August 2020"
 output: html_document
+#  word_document: default
+#  pdf_document: default
 ---
 
 ### Welcome to Module 4 of the R for Biochemists 201 Training module.
@@ -89,7 +91,7 @@ Our workflow is:
 
 
 ### Writing functions
-##### First video - writing your first function... 
+##### First video - writing a function... 
 ```{r get_data_for_Fig_4f}
 link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx"
 
@@ -446,14 +448,17 @@ Use drawProteins to generate a schematic of your favourite protein.
 
 ### Answers Exercise 5
 ```{r download_drawProteins}
-
 # download drawProteins from Bioconductor
+# install BiocManager
+# install.packages("BiocManager")
+# BiocManager::install("drawProteins")
 
+library(drawProteins)
+# show the vignette for drawProteins
+vignette("drawProteins_BiocStyle")
+# sample code is here... 
 
-# make a picture of your favourite molecule. 
-
-# integrate your learning by adding the information to the Github page we used above
-
+# integrate your learning by adding the code and output to the Github page we used above...
 ```
 
 
@@ -466,10 +471,10 @@ pagebreak \pagebreak
 pagebreak \pagebreak
 
 ### Review what we have learned
-* We have created a function
-* We have documented our function using Roxygen tags
-* We have learned the basics of version control using Github
-* We have looked and explored packages on Bioconductor and Github
+* We created a function
+* We documented our function using Roxygen tags
+* We learned the basics of version control using Github
+* We looked and explored packages on Bioconductor and Github
 
 ### Resources
 * [Software Carpentry piece about writing functions](https://swcarpentry.github.io/r-novice-inflammation/02-func-R/) 
