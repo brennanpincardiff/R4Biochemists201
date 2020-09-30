@@ -236,12 +236,12 @@ if we are using functions across multiple files, we might want to save them
 separately.
 
 To do this, create a new R script file with a meaningful name and cut and paste
-our fuction. In this case we are making a file called `workflow_function.R`
+our fuction. In this case we are making a file called `workflow_fig4f.R`
 
 To use the function, the source() function will bring it into the Global
 Environment. 
 ```{r bring_in_function, eval=FALSE} 
-source("/Users/paulbrennan/Documents/R_for_Biochemists_201_files/module_201_5_files/workflow_function.R")
+source("/Users/paulbrennan/Documents/R4Biochemists201/R/workflow_fig4f.R")
 
 ```
 
