@@ -28,25 +28,13 @@ script with exercise. We hope you enjoy the modules. We welcome feedback and
 * Understand & write functions 
 * Document a function
 * Version Control
-* Look at packages 
+* Exploring packages 
 
 
-As we deepen our knowledge and usage of R, it becomes useful to create
-functions. Functions can create a workflow, can be combination of other 
-functions or can be a detailed mathematical calculations. 
-
-When are you ready to create a function? Well, if you find yourself using the
-same commands multiple times then it suggests that you could benefit from
-creating a function that brings these together. If you generate data in the 
-same way and analyse in the same way, you could benefit from a workflow that 
-brings together. 
-
-Three is usually the 'magic' number. If you have or plan to repeat the same 
-analysis three times you could probably write better code and reduce your 
-work by writing some functions. 
-
+As we deepen our knowledge and usage of R, it becomes useful to create functions. Functions can create a workflow, can be combination of other functions or can be a detailed programming or calculations. 
+When are you ready to create a function? Well, if you find yourself using the same commands or pieces of workflow multiple times then it suggests that you could benefit from creating a function that brings these together. If you generate data in the same way and analyse in the same way, you could benefit from a workflow that brings together. 
+Three is usually the 'magic' number. If you have or plan to repeat the same analysis three times you could probably write better code and reduce your work by writing some functions. 
 To create a function, we use the function() function. 
-
 Let's look at Croft Figure 4f.
 
 
@@ -60,20 +48,11 @@ library(tidyr)
 pagebreak \pagebreak
 
 ### The Experiment
-I have chosen a recent Nature publication by Croft et al. Nature now require
-authors to share their data and these authors have supplied their data as an 
-Excel file. The authors have analysed fibroblast subsets and how they contribute
-to arthritis in a mouse model. 
-
-The title of the paper is:
-"Distinct fibroblast subsets drive inflammation and damage in arthritis""
-Copies are available here:
-[Online](https://www.nature.com/articles/s41586-019-1263-7)
-[PDF](https://www.nature.com/articles/s41586-019-1263-7.pdf)
-Also in [Biorxiv as preprint](https://www.biorxiv.org/content/10.1101/374330v1)
-
-We are going to explore the data in
-[Figure 4f](https://www.nature.com/articles/s41586-019-1263-7/figures/4).
+We are going to explore the data in 
+[Figure 4f](https://www.nature.com/articles/s41586-019-1263-7/figures/4) 
+from the Croft (2019) paper. There are panels about Leukocytes, Neutrophils and
+Macrophages so we are going to create a function that links together the
+workflow for each of the three panels. 
 
 The [data is available](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx).
 
@@ -103,11 +82,9 @@ sheet_names <- excel_sheets("file.xlsx")
 data <- read_excel("file.xlsx", sheet_names[6])
 ```
 
-OK so this data doesn't really work. 
-Edit it a bit in Excel as per video...
-
-Save as fig_4f.xlsx
-Import again...
+As with previous data sets from this manuscript the raw data is quite Untidy. 
+I have simplified it a little in Excel and it is available to download from
+Github with this code.
 
 ```{r get_easier_data_for_Fig_4f}
 link <- c("https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/fig_4f.xlsx?raw=true")
@@ -152,7 +129,7 @@ plot_l <- ggplot(data = data_2,
 plot_l
 ```
 
-
+Now we turn it into a function. 
 
 ```{r make_function}
 ## make a function called my_workflow
@@ -222,10 +199,8 @@ what to do.
 ### Answers for Exercise 1
 Here is an example of a function that will add the statistical tests.
 ```{r exercise_1_answer} 
-# us ggpubr
+# use ggpubr
 ```
-
-
 
 
 ### Our second advanced theme is documentation
@@ -273,7 +248,7 @@ We can add more information so that we know what the function does.
 
 ### Exercise 2
 Above I hope that you created your own function to add the statistical tests. 
-Please you add the documentation to that too.
+Please you add the documentation to that now.
 
 ### Answers for Exercise 2
 Here is my example...
@@ -284,48 +259,22 @@ Here is my example...
 Version control is a key element of becoming a better programmer. 
 It is a way of recording changes you have made to a script, to a function or
 to a workflow. One of the most commonly used methods is called Git. 
-I just want make a brief mention of Git here. 
-There are lots of other resources to learn more about Git. 
 
-You will need to Sign up on [Github.com](https://github.com/).
-Then you can go to a Git Repository and make a change. 
-I've created a [repo for R for Biochemists 201](https://github.com/brennanpincardiff/R_for_Biochemists_201).
-
-Go to the [favourite_molecules file](https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/favourite_molecules/favourite_molecules.Rmd) on your browser.
-Press the pencil icon and edit the file to add some details of your favourite
-molecule. Commit your change. 
-
-This basic workflow is in a public Git Repository. 
-Your repo can be public or private. For your research you may want a private
-repository. 
-
-This is the basic workflow:
-1. Create a repository or repo.
-2. Make a change
-3. Stage it
-4. Make a comment about the change you made
-5. Commit the change. 
-
-You can do all of this within R-Studio as well as doing it through your browser. 
-
-
-pagebreak \pagebreak
+There is a video shows you how to get R-Studio working with Github, 
+how to commit a change and push it online.
 
 ### Exercise 3
-I would like you to try making a change on Github.
-Follow the steps above to add your name and favourite molecule.
-Have a go, you can't do anything wrong. 
-
-Then, try creating your own My_Learning_R prjoect in R-Studio. Link it up to 
-Github and write some code for the analysis of [another bit of data].
-Stage it and commit the change onto Github. 
-
-Share your link in the comments online and you have taken a key next step
-towards being a programmer. 
-
-### Answers for Exercise 3
-Here is another video of how you would go about doing all of this. 
-If you have questions, please use the comments below. 
+You will need to create an account for yourself on
+[Github.com](https://github.com/).
+Then, try creating your own My_Learning_R prjoect on Github. Put in 
+a Readme. 
+Then clone it into a new R Studio project. Write some code for the analysis of 
+some data. Stage it and commit the change onto Github. 
+See if you can make it all work together. 
+Make more changes and repeat the process. 
+Share the address of your Github repo so that we can see
+your progress. 
+You have taken a key next step towards being a programmer.
 
 
 pagebreak \pagebreak
@@ -341,9 +290,8 @@ and even contribute to them as your skills develop.
 Sources of packages:
 1. CRAN
 2. Bioconductor
-3. Github
-4. R-OpenSci
-5. Where else
+3. R-OpenSci
+4. Github
 
 A good place to explore for packages is Bioconductor. These are
 packages for Bioinformatics and can be used to explore biological data.
@@ -375,9 +323,6 @@ ggplot(n, aes(x = FL1.H)) + geom_density()
 
 # want two data files with different CFSE profiles....
 ```
-
-
-
 
 You can download and use a package from Github. 
 Explore gganatogram as an example. 
@@ -458,15 +403,9 @@ library(drawProteins)
 vignette("drawProteins_BiocStyle")
 # sample code is here... 
 
-# integrate your learning by adding the code and output to the Github page we used above...
+# integrate your learning by adding the code and output to the Github page you 
+# created above...
 ```
-
-
-pagebreak \pagebreak
-
-
-
-
 
 pagebreak \pagebreak
 
