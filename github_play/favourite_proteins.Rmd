@@ -1,0 +1,11 @@
+---
+title: "Favourite Protein"
+author: "Paul Brennan"
+date: "16/10/2020"
+output: html_document
+---
+
+My name is **Paul Brennan** and my favourite protein is [Rel A](https://www.uniprot.org/uniprot/Q04206). 
+
+My names is **Brian O'Neill** and my favourite protein is 
+[Protein kinase B/Akt](https://www.uniprot.org/uniprot/P31749)
