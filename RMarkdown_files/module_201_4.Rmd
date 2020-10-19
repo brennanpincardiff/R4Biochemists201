@@ -306,27 +306,66 @@ You need to install the BiocManager and then install the flowCore package.
 # BiocManager::install("flowCore")
 
 library("flowCore")
+library("flowViz")
+library(ggplot2)
+library(ggpubr)
 
-# download a flow data file
-link <- "https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/data/A01%20CFSE%20profiles%20Day%203.fcs?raw=true"
+# download first data file
+link1 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A01.fcs?raw=true"
+download.file(url=link1, destfile="file.fcs", mode="wb")
+data <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
 
-download.file(url=link, destfile="file.fcs", mode="wb")
+#with colours indicating density
+colfunc <- colorRampPalette(c("white", "lightblue", "green", "yellow", "red"))
+# this colour palette can be changed to your taste 
 
-data <-read.FCS("file.fcs", alter.names = TRUE)
-data
+vals <- as.data.frame(exprs(data))
+ggplot(vals, aes(x=FSC.A, y=SSC.A)) +
+    ylim(0, 500000) +
+    xlim(0,5000000) +
+    stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) +
+    scale_fill_gradientn(colours=colfunc(400)) + # gives the colour plot
+    geom_density2d(colour="black", bins=5) # draws the lines inside
 
-n <- as.data.frame(exprs(data))
 
-ggplot(n, aes(x = FL1.H)) + geom_density()
-# open it and plot it...
+# write function for plotting CFSE data...
+plot_cfse <- function(data){
+    vals_1 <- as.data.frame(exprs(data))
+    vals_f <- dplyr::filter(vals_1, FSC.A>1000000)
+    ggplot(vals_f, aes(x=FL1.H)) + geom_density() +
+        xlim(1000,1000000) + scale_x_log10()
+}
+
+# plot first data set
+p1 <- plot_cfse(data)
+
+# download and plot second data set
+link2 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A02_top_dose.fcs?raw=true"
+download.file(url=link2, destfile="file.fcs", mode="wb")
+data2 <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
+p2 <- plot_cfse(data2)
+
+# download and plot third data set
+link3 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A04.fcs?raw=true"
+download.file(url=link2, destfile="file.fcs", mode="wb")
+data3 <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
+p3 <- plot_cfse(data3)
 
 
-# want two data files with different CFSE profiles....
+text <- paste("Each decrease in fluorescence represents a population division.")
+
+text.p <- ggparagraph(text = text, face = "italic", size = 11, color = "black")
+
+ggarrange(p1, p2, p3, text.p, ncol=1,
+          labels = c("A.Cell proliferation in control",
+                     "B.Inhibited by Bay top dose",
+                     "C.Half Bay dose inhibits less"))
+
 ```
+
 
 You can download and use a package from Github. 
 Explore gganatogram as an example. 
-
 ```{r download_from_github}
 ## install from Github
 # remove the hash tag to run. 
