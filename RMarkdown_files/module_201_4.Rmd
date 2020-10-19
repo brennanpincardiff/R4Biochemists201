@@ -374,7 +374,7 @@ library(gganatogram)
 library(dplyr)
 library(viridis)
 library(gridExtra)
-
+ 
 organPlot <- data.frame(organ = c("heart", "leukocyte", "nerve", "brain", "liver", "stomach", "colon"), 
  type = c("circulation", "circulation",  "nervous system", "nervous system", "digestion", "digestion", "digestion"), 
  colour = c("red", "red", "purple", "purple", "orange", "orange", "orange"), 
