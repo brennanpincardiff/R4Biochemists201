@@ -306,7 +306,6 @@ You need to install the BiocManager and then install the flowCore package.
 # BiocManager::install("flowCore")
 
 library("flowCore")
-library("flowViz")
 library(ggplot2)
 library(ggpubr)
 
@@ -347,7 +346,7 @@ p2 <- plot_cfse(data2)
 
 # download and plot third data set
 link3 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A04.fcs?raw=true"
-download.file(url=link2, destfile="file.fcs", mode="wb")
+download.file(url=link3, destfile="file.fcs", mode="wb")
 data3 <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
 p3 <- plot_cfse(data3)
 
