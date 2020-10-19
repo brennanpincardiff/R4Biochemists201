@@ -306,19 +306,49 @@ You need to install the BiocManager and then install the flowCore package.
 # BiocManager::install("flowCore")
 
 library("flowCore")
+library("flowViz")
+library(ggplot2)
 
-# download a flow data file
-link <- "https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/data/A01%20CFSE%20profiles%20Day%203.fcs?raw=true"
+# download a compressed folder of flow data
 
+#with colours indicating density
+colfunc <- colorRampPalette(c("white", "lightblue", "green", "yellow", "red"))
+# this colour palette can be changed to your taste 
+
+
+
+show_FSC_SSC <- function(filename){
+    data <- flowCore::read.FCS(filename, alter.names = TRUE)
+    vals <- as.data.frame(flowCore::exprs(data))
+    return(ggplot(vals, aes(x=FSC.A, y=SSC.A)) +
+      ylim(0, 500000) +
+      xlim(0,5000000) +
+      stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) +
+      scale_fill_gradientn(colours=colfunc(400)) + # gives the colour plot
+      geom_density2d(colour="black", bins=5) +
+      annotate("text", x = 10, y = 400000, label = filename)   )# draws the lines inside
+}
+
+show_CFSE <- function(filename){
+    data <- flowCore::read.FCS(filename, alter.names = TRUE)
+    vals <- as.data.frame(flowCore::exprs(data))
+    vals_f <- dplyr::filter(vals, FSC.A>1000000)
+
+    return(ggplot(vals_f, aes(x=FL1.H)) + geom_density() +
+       xlim(1000,1000000) + scale_x_log10())
+}
+
+link1 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/20111028_one%20sample%20Bay%20Day%207/A01.fcs?raw=true"
 download.file(url=link, destfile="file.fcs", mode="wb")
 
-data <-read.FCS("file.fcs", alter.names = TRUE)
-data
+data <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
 
-n <- as.data.frame(exprs(data))
+show_FSC_SSC(file.fcs)
+show_CFSE(file.fcs)
 
-ggplot(n, aes(x = FL1.H)) + geom_density()
-# open it and plot it...
+
+show_CFSE("file.fcs")
+show_CFSE(file_names[3], path)
 
 
 # want two data files with different CFSE profiles....
