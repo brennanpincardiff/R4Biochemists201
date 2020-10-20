@@ -1,7 +1,7 @@
 ---
 title: "R for Biochemists 201 Module 4 - Functions & Packages"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "August 2020"
+date: "October 2020"
 output: html_document
 #  word_document: default
 #  pdf_document: default
@@ -284,10 +284,11 @@ pagebreak \pagebreak
 
 Packages are group of functions that are available to download and explore. 
 There are lots of packages available that you might want to play with. 
-You might even want to adapt these to your own workflows, change functions
+You might want to adapt these to your own workflows, change functions
 and even contribute to them as your skills develop. 
 
 Sources of packages:
+
 1. CRAN
 2. Bioconductor
 3. R-OpenSci
@@ -298,7 +299,8 @@ packages for Bioinformatics and can be used to explore biological data.
 
 For example, perhaps you want to look at some flow data. 
 There is a package for that on Bioconductor. 
-You need to install the BiocManager and then install the flowCore package. 
+You need to install BiocManager and then install the flowCore package. Here
+is a demonstration of this using some of my data. 
 
 ```{r download_from_Bioconductor}
 # install BiocManager
@@ -309,10 +311,15 @@ library("flowCore")
 library(ggplot2)
 library(ggpubr)
 
-# download first data file
+
 link1 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A01.fcs?raw=true"
-download.file(url=link1, destfile="file.fcs", mode="wb")
-data <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
+
+# download first data file
+download_data <- function(link){
+    download.file(url=link, destfile="file.fcs", mode="wb")
+    data <- flowCore::read.FCS("file.fcs", alter.names = TRUE)}
+
+data <- download_data(link1)
 
 #with colours indicating density
 colfunc <- colorRampPalette(c("white", "lightblue", "green", "yellow", "red"))
@@ -329,8 +336,11 @@ ggplot(vals, aes(x=FSC.A, y=SSC.A)) +
 
 # write function for plotting CFSE data...
 plot_cfse <- function(data){
+    # this exprs() function pulls out the numbers. 
     vals_1 <- as.data.frame(exprs(data))
+    # I want to exclude small debris and just analyse cells. 
     vals_f <- dplyr::filter(vals_1, FSC.A>1000000)
+    # then draw the plot
     ggplot(vals_f, aes(x=FL1.H)) + geom_density() +
         xlim(1000,1000000) + scale_x_log10()
 }
@@ -340,14 +350,12 @@ p1 <- plot_cfse(data)
 
 # download and plot second data set
 link2 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A02_top_dose.fcs?raw=true"
-download.file(url=link2, destfile="file.fcs", mode="wb")
-data2 <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
+data2 <- download_data(link2)
 p2 <- plot_cfse(data2)
 
 # download and plot third data set
 link3 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A04.fcs?raw=true"
-download.file(url=link3, destfile="file.fcs", mode="wb")
-data3 <- flowCore::read.FCS("file.fcs", alter.names = TRUE)
+data3 <- download_data(link3)
 p3 <- plot_cfse(data3)
 
 
@@ -441,7 +449,7 @@ library(drawProteins)
 vignette("drawProteins_BiocStyle")
 # sample code is here... 
 
-# integrate your learning by adding the code and output to the Github page you 
+# integrate your learning by adding the code and output to your Github page you 
 # created above...
 ```
 
