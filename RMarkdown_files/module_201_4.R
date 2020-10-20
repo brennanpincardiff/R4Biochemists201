@@ -1,11 +1,11 @@
-## ----packages_we_need---------------------------------------------------------
+## ----packages_we_need----------------------------------------------------
 library(readxl)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
 
 
-## ----get_data_for_Fig_4f------------------------------------------------------
+## ----get_data_for_Fig_4f-------------------------------------------------
 link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx"
 
 # the download.file() function downloads and saves the file with the name given
@@ -16,7 +16,7 @@ sheet_names <- excel_sheets("file.xlsx")
 data <- read_excel("file.xlsx", sheet_names[6])
 
 
-## ----get_easier_data_for_Fig_4f-----------------------------------------------
+## ----get_easier_data_for_Fig_4f------------------------------------------
 link <- c("https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/fig_4f.xlsx?raw=true")
 
 # the download.file() function downloads and saves the file with the name given
@@ -25,7 +25,7 @@ download.file(url=link, destfile="file.xlsx", mode="wb")
 data <- read_excel("file.xlsx")
 
 
-## ----first_workflow-----------------------------------------------------------
+## ----first_workflow------------------------------------------------------
 # select out the rows we want with filter() function for "Leucocytes"
 # gather without cell_type and treatment
 # mutate treatment into a factor to plot in the correct order
@@ -48,7 +48,7 @@ plot_l <- ggplot(data = data_2,
 plot_l
 
 
-## ----make_function------------------------------------------------------------
+## ----make_function-------------------------------------------------------
 ## make a function called my_workflow
 
 my_workflow <- function(data, a_cell_type){
@@ -75,7 +75,7 @@ my_workflow <- function(data, a_cell_type){
 
 
 
-## ----check_function-----------------------------------------------------------
+## ----check_function------------------------------------------------------
 # check_function
 cell_types <- unique(data$cell_type)
 cell_types[1] # this is Leucocytes and should work...
@@ -85,7 +85,7 @@ leuco_plot
 # do a visual check that the same object as the script above
 
 
-## ----use_function-------------------------------------------------------------
+## ----use_function--------------------------------------------------------
 # now plot for other cell types
 
 cell_types[2] # this is Leucocytes and should work...
@@ -98,48 +98,88 @@ neutro_plot
 macro_plot
 
 
-## ----exercise_1_answer--------------------------------------------------------
-# us ggpubr
-
-
-## ----bring_in_function, eval=FALSE--------------------------------------------
-## source("/Users/paulbrennan/Documents/R_for_Biochemists_201_files/module_201_5_files/workflow_function.R")
+## ----bring_in_function, eval=FALSE---------------------------------------
+## source("/Users/paulbrennan/Documents/R4Biochemists201/R/workflow_fig4f.R")
 ## 
 
 
-## ----download_from_Bioconductor-----------------------------------------------
+## ----download_from_Bioconductor------------------------------------------
 # install BiocManager
 # install.packages("BiocManager")
 # BiocManager::install("flowCore")
 
 library("flowCore")
-
-# download a flow data file
-link <- "https://github.com/brennanpincardiff/R_for_Biochemists_201/blob/master/data/A01%20CFSE%20profiles%20Day%203.fcs?raw=true"
-
-download.file(url=link, destfile="file.fcs", mode="wb")
-
-data <-read.FCS("file.fcs", alter.names = TRUE)
-data
-
-n <- as.data.frame(exprs(data))
-
-ggplot(n, aes(x = FL1.H)) + geom_density()
-# open it and plot it...
+library(ggplot2)
+library(ggpubr)
 
 
-# want two data files with different CFSE profiles....
+link1 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A01.fcs?raw=true"
+
+# download first data file
+download_data <- function(link){
+    download.file(url=link, destfile="file.fcs", mode="wb")
+    data <- flowCore::read.FCS("file.fcs", alter.names = TRUE)}
+
+data <- download_data(link1)
+
+#with colours indicating density
+colfunc <- colorRampPalette(c("white", "lightblue", "green", "yellow", "red"))
+# this colour palette can be changed to your taste 
+
+vals <- as.data.frame(exprs(data))
+ggplot(vals, aes(x=FSC.A, y=SSC.A)) +
+    ylim(0, 500000) +
+    xlim(0,5000000) +
+    stat_density2d(geom="tile", aes(fill = ..density..), contour = FALSE) +
+    scale_fill_gradientn(colours=colfunc(400)) + # gives the colour plot
+    geom_density2d(colour="black", bins=5) # draws the lines inside
 
 
-## ----download_from_github-----------------------------------------------------
+# write function for plotting CFSE data...
+plot_cfse <- function(data){
+    # this exprs() function pulls out the numbers. 
+    vals_1 <- as.data.frame(exprs(data))
+    # I want to exclude small debris and just analyse cells. 
+    vals_f <- dplyr::filter(vals_1, FSC.A>1000000)
+    # then draw the plot
+    ggplot(vals_f, aes(x=FL1.H)) + geom_density() +
+        xlim(1000,1000000) + scale_x_log10()
+}
+
+# plot first data set
+p1 <- plot_cfse(data)
+
+# download and plot second data set
+link2 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A02_top_dose.fcs?raw=true"
+data2 <- download_data(link2)
+p2 <- plot_cfse(data2)
+
+# download and plot third data set
+link3 <- "https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/cfse_data_20111028_Bay_d7/A04.fcs?raw=true"
+data3 <- download_data(link3)
+p3 <- plot_cfse(data3)
+
+
+text <- paste("Each decrease in fluorescence represents a population division.")
+
+text.p <- ggparagraph(text = text, face = "italic", size = 11, color = "black")
+
+ggarrange(p1, p2, p3, text.p, ncol=1,
+          labels = c("A.Cell proliferation in control",
+                     "B.Inhibited by Bay top dose",
+                     "C.Half Bay dose inhibits less"))
+
+
+
+## ----download_from_github------------------------------------------------
 ## install from Github
 # remove the hash tag to run. 
-#devtools::install_github("jespermaag/gganatogram")
+# devtools::install_github("jespermaag/gganatogram")
 library(gganatogram)
 library(dplyr)
 library(viridis)
 library(gridExtra)
-
+ 
 organPlot <- data.frame(organ = c("heart", "leukocyte", "nerve", "brain", "liver", "stomach", "colon"), 
  type = c("circulation", "circulation",  "nervous system", "nervous system", "digestion", "digestion", "digestion"), 
  colour = c("red", "red", "purple", "purple", "orange", "orange", "orange"), 
@@ -152,15 +192,14 @@ gganatogram(data=organPlot, fillOutline='#a6bddb', organism='human', sex='male',
 
 
 
-## ----download_ggseg-----------------------------------------------------------
-# install
-# devtools::install_github("LCBC-UiO/ggseg", build_vignettes = TRUE)
-library(ggseg)
-ggseg(atlas=aseg)
+
+
+## Exercise downloade ggseg draw a brain...
 
 
 
-## ----download_drawProteins----------------------------------------------------
+
+## ----download_drawProteins-----------------------------------------------
 # download drawProteins from Bioconductor
 # install BiocManager
 # install.packages("BiocManager")
@@ -171,5 +210,6 @@ library(drawProteins)
 vignette("drawProteins_BiocStyle")
 # sample code is here... 
 
-# integrate your learning by adding the code and output to the Github page we used above...
+# integrate your learning by adding the code and output to your Github page you 
+# created above...
 
