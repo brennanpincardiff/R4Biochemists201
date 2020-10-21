@@ -3,10 +3,10 @@ title: "R for Biochemists 201 Module 1 - Bar charts & beyond with tidy data"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
 date: "Oct 2020"
 output:
-  html_document:
-    df_print: paged
+#  html_document:
+#    df_print: paged
 #  pdf_document: default
-#  word_document: default
+  word_document: default
 ---
 
 ### Welcome to the first R for Biochemists 201 Training module.
@@ -37,6 +37,65 @@ library(dplyr)
 library(ggplot2)
 library(tidyr)
 ```
+
+
+### Introducing tidy data
+##### First video - Tidy data 
+
+```{r data_for_tidying}
+# first example - relatively simple
+link <- "https://github.com/brennanpincardiff/RforBiochemists/raw/master/data/Viability_data_example_R201_20200722_for_tidying.xls"
+
+download.file(url=link, destfile="Viability_data_example.xls", mode="wb")
+
+ex_1 <- read_xls("Viability_data_example.xls")
+
+# Look at the file
+ex_1
+# View(ex_1)
+
+# we can use the gather() function to focus on our two columns
+tidy_ex1 <- gather(ex_1[,2:3])
+
+# rename with useful names
+colnames(tidy_ex1) <- c("Treatment", "Viability")
+tidy_ex1
+
+# make a plot...
+ggplot(tidy_ex1, aes(Treatment, Viability)) + 
+    geom_bar(stat = "summary", fun = "mean")
+
+# second example - a more obvious change from wide into long format
+link <- "https://github.com/brennanpincardiff/RforBiochemists/raw/master/data/untidy_drug_data_ex_1.csv"
+
+download.file(url=link, destfile="untidy_data_ex_2.csv", mode="wb")
+
+ex_2 <- read.csv("untidy_data_ex_2.csv")
+ex_2 
+# so even the column names are a bit of a challenge...
+colnames(ex_2)
+
+# column names with numbers cause a problem for R. 
+
+# we will use the pivot_longer() function 
+# we exclude the drug concentration colum 
+# and we exclude the NA cells...
+data2 <- pivot_longer(ex_2, -"X.SU_drug_1..M", values_to = "apoptosis",
+                      values_drop_na = TRUE)
+
+# rename 
+colnames(data2) <- c("Conc", "name", "apop")
+
+# Look at the file
+# View(data2)
+data2
+# make a plot...
+ggplot(data2, aes(x = Conc, y = apop)) + geom_point() +
+    scale_x_log10() 
+```
+
+
+
 
 pagebreak \pagebreak
 
@@ -71,7 +130,7 @@ Our workflow is
 
 
 ### Importing our data in R
-##### First video - importing and tidying our data 
+##### Second video - importing and tidying our data 
 ```{r get_data_for_Fig_1b}
 link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx"
 
@@ -238,7 +297,6 @@ ggplot(data_1j_stats, aes(key, mean)) +
 pagebreak \pagebreak
 
 
-
 However, there is easier way, I think. 
 Box and whisker plots offer a nice option.
 
@@ -265,7 +323,6 @@ ggplot(data_3, aes(key, value, shape = key, colour=key)) +
 ```
 
 
-
 A colleague with lots more statistical experience taught me about violin
 plots. Remember, I'm a biochemists not a statistician. These show more of the 
 data variation across the plot. Just change your geom and change your plot.  
@@ -276,7 +333,6 @@ ggplot(data_3, aes(key, value, shape = key, colour=key)) +
      geom_jitter(width = 0.1)
 
 ```
-
 
 
 pagebreak \pagebreak
@@ -339,8 +395,6 @@ data_1j %>%
      theme_classic() + theme(legend.position="none")
 
 ```
-
-
 
 
 pagebreak \pagebreak
