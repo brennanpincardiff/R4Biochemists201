@@ -26,10 +26,10 @@ then run the code line by line.
 7. Extend your learning using the resources at the end
 
 ### Learning Objectives for Module 2
-* Comparing means with T-tests
-* Doing a little statistical analsyis with R
-* Adding statistics to plots with ggpubr
-* Preparing multipanel figures with R
+* Revisit our data science workflow
+* Compare means with T-tests in R
+* Add statistics to plots with the ggpubr package
+* Prepare a multi-panel figure with R
 
 ```{r packages_we_need}
 library(tidyverse)
@@ -40,10 +40,15 @@ library(ggpubr)
 pagebreak \pagebreak
 
 ### The Experiment
-I would like to continue with the data from the  Nature publication by 
-Croft et al. In figure 4a, the authors have draw 12 bar plots, 
-calculated some statistics and labelled the plots. In this module, I would 
-like to reproduce this data. 
+We are going to look at a different figure from the Nature paper by Croft et al
+available here: [Online](https://www.nature.com/articles/s41586-019-1263-7) and as a [PDF](https://www.nature.com/articles/s41586-019-1263-7.pdf). Also 
+in [Biorxiv as preprint](https://www.biorxiv.org/content/10.1101/374330v1). 
+
+We are going to explore the data in [Figure 4a](https://www.nature.com/articles/s41586-019-1263-7/figures/4). The data is [available](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx). 
+As before the Excel file has 9 worksheets - each sheet corresponding to a 
+part of the figure. The authors have drawn 12 bar plots, calculated some
+statistics and labelled the plots. In this module, I would like to reproduce
+this data.  
 
 As always, the steps are:
 1. Import the data
@@ -51,7 +56,7 @@ As always, the steps are:
 3. Summarise
 4. Visualise
 
-This 
+
 
 ### Importing and tidying our data
 ##### First video - importing and tidying our data 
@@ -82,7 +87,7 @@ Now, save this file so that we have a cleaner import..
 link <- ("https://raw.githubusercontent.com/brennanpincardiff/RforBiochemists/master/data/figure_4a_data_altered.xlsx")
 download.file(url=link, destfile="file.xlsx", mode="wb")
 
-data_t <- read_excel("file.xlsx")
+data_c <- read_excel("file.xlsx")
 
 ```
 
@@ -103,7 +108,7 @@ We push this all into a new object called tidy_data.
 ```{r tidy_data_for_Fig_4a}
 # here we have a selection of functions piped together to form a 
 # script to tidy our data...
-data_t %>%
+data_c %>%
     pivot_longer(-Cytokine) %>%
     separate(name, into=c(NA, "thy_status", NA)) %>%
     mutate(thy_status = factor(thy_status)) %>%
@@ -142,21 +147,32 @@ Try the following steps:
 4. then tidy in R.
 
 ### Answers for Exercise 1
+How did you get on?
 
-There is a video of the Excel clean up below. 
-A cleaned up file to import into R is available.
-Then you have the R script to create Tidy data.
+My code is available on Github here as is the Excel file I created when I 
+cleaned it up a little. 
 
-Video
+You may have cleaned it up differently and so your code may be different. It is 
+fine. The key is to progress with the task. 
 
 ```{r exercise_1}
-# in R
 # import a cleaner file from Excel
+# read in easier data than the download.
+link <- ("https://raw.githubusercontent.com/brennanpincardiff/RforBiochemists/master/data/fig_2d_altered.xlsx")
+download.file(url=link, destfile="fig2d_altered.xlsx", mode="wb")
+
+data <- read_excel("fig2d_altered.xlsx", skip = 1)
 
 # tidy it with various functions...
-
-
-
+# gather(), separate() and mutate() into factors...
+tidy_data <- data %>%
+    gather() %>%
+    separate(key, into=c("names", "DTR_status"), sep = "/") %>%
+    # need to turn the names into factors...
+    mutate(DTR_status = factor(DTR_status)) %>%
+    mutate(names = factor(names, c("bone_eros_CT", "bone_form_CT", 
+                                   "area_bone_eros", "area_bone_form",
+                                   "area_pan", "area_dest_cart")))
 
 
 ```
