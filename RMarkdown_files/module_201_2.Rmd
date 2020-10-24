@@ -79,13 +79,16 @@ sheet_names <- excel_sheets("file.xlsx")
 data <- read_excel("file.xlsx", sheet_names[1])
 ```
 
-So if you look at the data... it's a bit of a challenge. There is lots of missing
+So if you look at the data... it's a bit of a challenge. There is lots of
+missing
 values in the form of NAs. The numbers appear to be on different rows to the
 names. All in all it is a real challenge. 
 
 The only way to work out what is going on is to open the file in in Excel. 
-If you look at the file in Excel, you notice that the names are offset by a line.
-You can also see that the first six values are one set, there is a gap and the 
+If you look at the file in Excel, you notice that the names are offset by
+a line.
+You can also see that the first six values are one set, there is a gap and
+the 
 second set of values are a different set. The set names are included in every
 row. A little tidying in Excel is the easiest thing to do first. 
 all in R. That's what I'm going to do as you shall see in the video.
