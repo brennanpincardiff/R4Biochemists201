@@ -3,10 +3,10 @@ title: "R for Biochemists 201 Module 1 - Bar charts & beyond with tidy data"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
 date: "Oct 2020"
 output:
-#  html_document:
-#    df_print: paged
+  html_document:
+    df_print: paged
 #  pdf_document: default
-  word_document: default
+#  word_document: default
 ---
 
 ### Welcome to the first R for Biochemists 201 Training module.

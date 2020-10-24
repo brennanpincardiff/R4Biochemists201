@@ -1,15 +1,21 @@
 ---
-title: "R for Biochemists 201 Module 2 - A multipanel figure with p-values"
+title: "R for Biochemists 201 Module 2 - A multi-panel figure with p-values"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "July 2020"
-output: html_document
-#  word_document: default
+date: "October 2020"
+output: 
+   html_document
+#   word_document: default
 #  pdf_document: default
 ---
 
 ### Welcome to the second R for Biochemists 201 Training module.
 
-Each module is designed to take approximately 60 minutes to complete. 
+The teaching material in module is designed to take approximately 60 minutes
+to work through the learning materials. The exercises may take quite a bit 
+longer as the material is getting more complex. Please be patient 
+with yourself. Take breaks as you need. Completing all of this in a
+single sitting is probably not wise. 
+
 
 The material provided includes text to read, video demonstrations, 
 example R scripts with exercises. We hope you enjoy the modules. 
@@ -31,6 +37,7 @@ then run the code line by line.
 * Add statistics to plots with the ggpubr package
 * Prepare a multi-panel figure with R
 
+#### Our packages
 ```{r packages_we_need}
 library(tidyverse)
 library(readxl)
@@ -51,6 +58,7 @@ statistics and labelled the plots. In this module, I would like to reproduce
 this data.  
 
 As always, the steps are:
+
 1. Import the data
 2. Tidy the data
 3. Summarise
@@ -140,16 +148,20 @@ multipanel figure. The figure looks like this:
 [insert figure, check copyright]
 In this case there are six panels. 
 The data for Figure 2d is available to download. 
+
 Try the following steps:
+
 1. downloading the data and looking at in Excel. 
 2. reogranise in Excel - it'll be easier.
 3. save your file and import it into R.
 4. then tidy in R.
 
+Please don't try to plot it yet, that's a later exercise...
+
 ### Answers for Exercise 1
 How did you get on?
 
-My code is available on Github here as is the Excel file I created when I 
+My code is available on [Github here](https://github.com/brennanpincardiff/R4Biochemists201/blob/master/R/module_201_2_ans_ex_1.R) as is the Excel file I created when I 
 cleaned it up a little. 
 
 You may have cleaned it up differently and so your code may be different. It is 
@@ -165,7 +177,7 @@ data <- read_excel("fig2d_altered.xlsx", skip = 1)
 
 # tidy it with various functions...
 # gather(), separate() and mutate() into factors...
-tidy_data <- data %>%
+tidy_data_2 <- data %>%
     gather() %>%
     separate(key, into=c("names", "DTR_status"), sep = "/") %>%
     # need to turn the names into factors...
@@ -231,6 +243,8 @@ See if you can improve your plot with labels and a source.
 
 ### Answers for Exercise 2
 
+This code is also on [Github]([Github here](https://github.com/brennanpincardiff/R4Biochemists201/blob/master/R/module_201_2_ans_ex_2.R))
+
 ```{r exercise_2}
 # start with our data
 tidy_data %>%
@@ -262,6 +276,8 @@ plot + stat_compare_means(method = "t.test") +
 
 ```
 
+### Plotting all the data
+##### Third video
 
 So the next stage is to plot all the data. 
 As we know from module one there are various ways to do this. While I don't 
@@ -385,6 +401,7 @@ It's also OK to look up documentation using the help within R.
 The code here looks complex but most of it is just cut and pasted from 
 above. 
 If you have nice code, cut and pasting is just fine. 
+This code is also on [Github]([Github here](https://github.com/brennanpincardiff/R4Biochemists201/blob/master/R/module_201_2_ans_ex_3.R))
 
 ```{r exercise_3}
 # answers_201_2_exercise_3
@@ -449,6 +466,7 @@ There is lots of code here so I have done a code demo video as well.
 Try to do as much as you can by yourself but don't worry if you don't get it
 all first time around. 
 Go through the code demo and the code and you will learn lots. 
+This code is also on [Github]([Github here](https://github.com/brennanpincardiff/R4Biochemists201/blob/master/R/module_201_2_ans_ex_4.R)).
 
 
 ```{r exercise_4}
@@ -460,7 +478,7 @@ download.file(url=link, destfile="fig2d_altered.xlsx", mode="wb")
 data <- read_excel("fig2d_altered.xlsx", skip = 1)
 
 # gather(), separate() and mutate() into factors...
-tidy_data <- data %>%
+tidy_data_2 <- data %>%
     gather() %>%
     separate(key, into=c("names", "DTR_status"), sep = "/") %>%
     # need to turn the names into factors...
@@ -471,33 +489,34 @@ tidy_data <- data %>%
 
 
 # simple bar plot calculating the means and using facet_wrap()
-ggplot(tidy_data, aes(x=DTR_status, y=value, fill = DTR_status)) +
+ggplot(tidy_data_2, aes(x=DTR_status, y=value, fill = DTR_status)) +
     stat_summary(fun="mean", geom="bar") +   # calculates means
     scale_fill_manual(values=c("white", "grey")) + 
     facet_wrap(~names, scales ="free_y", ncol = 2)
 
 # to put on error bars need to summarise to calculate mean and SD. 
 # more on error bars: http://www.sthda.com/english/wiki/ggplot2-error-bars-quick-start-guide-r-software-and-data-visualization
-tidy_data %>%
+tidy_data_2 %>%
     group_by(names, DTR_status) %>%
-    summarise(sd = sd(value), value = mean(value)) -> tidy_data_stats
+    summarise(sd = sd(value), value = mean(value)) -> tidy_data_stats_2
 
 # just stats first...
 my_comparisons <- list( c("DTR-", "DTR+"))
-p1 <- ggplot(data = tidy_data, aes(x=DTR_status, y=value)) + 
+p1 <- ggplot(data = tidy_data_2, aes(x=DTR_status, y=value)) + 
     stat_compare_means(comparisons = my_comparisons, method = "t.test",
                  paired = TRUE, size = 3,
                  symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
                                    symbols = c("****","***", "***", "ns"))) +
-    theme_bw() +
+    theme_classic2() +
     theme(strip.background = element_rect(fill = FALSE)) +
     facet_wrap(~names, scales ="free_y", ncol = 2)
 
 p1
+# to see the stars you need to Zoom... 
 
 # then add bars
 p1 <- p1 +  
-    geom_bar(data = tidy_data_stats, 
+    geom_bar(data = tidy_data_stats_2, 
              aes(x=DTR_status, y=value,  fill=DTR_status),
         stat="identity",
              position=position_dodge(),
@@ -516,17 +535,18 @@ p1 <- p1 +
                                         area_pan = "Area pannus \n tissue (%)", 
                                         area_dest_cart = "Area destained \n cartilage (%)"))) +
     # geom_errorbar() adds the error bars :-)
-    geom_errorbar(data = tidy_data_stats, 
+    geom_errorbar(data = tidy_data_stats_2, 
                   aes(ymin=value-sd, ymax=value+sd), 
                   width=.2,
                   position=position_dodge(.9))
 
 ### then add geom_jitter to put points at the top...
 
-p1 <- p1 + geom_jitter(data = tidy_data, 
+p1 <- p1 + geom_jitter(data = tidy_data_2, 
                        aes(x=DTR_status, y=value))
 
 # then add styling and titles...
+p1
 
 p1 <- p1 + ylab(NULL) + xlab(NULL) +
     # move strips outside of numbers
@@ -536,14 +556,11 @@ p1 <- p1 + ylab(NULL) + xlab(NULL) +
     labs(title = "Figure 2d",
          subtitle = "Croft et al, Nature, 2019")
 
-p1
-
-
 ```
 pagebreak \pagebreak
-
-
-
+```{r exercise_4_large_print, fig.height=12, fig.width = 9}
+p1
+```
 
 
 
@@ -571,10 +588,7 @@ pagebreak \pagebreak
 
 ### Resources
 * You could move onto Module 3 -.
-* Try out a script from the R for Biochemists website <>
 * The chapter of the ggplot2 book about facetting[https://ggplot2-book.org/facet.html]
 * The site for ggpubr with worked examples [https://rpkgs.datanovia.com/ggpubr/]
 * I like the (STHDA website)[http://www.sthda.com/english/wiki/ggplot2-essentials] - lots of worked examples
 * I learned a lot about statistics from (Andy Field who has a website)[https://www.discoveringstatistics.com/].
-
-https://towardsdatascience.com/a-gentle-guide-to-statistics-in-r-ccb91cc1177e

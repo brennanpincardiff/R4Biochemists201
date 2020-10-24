@@ -35,7 +35,7 @@ p1 <- ggplot(data = tidy_data, aes(x=DTR_status, y=value)) +
                        paired = TRUE, size = 3,
                        symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
                                           symbols = c("****","***", "***", "ns"))) +
-    theme_bw() +
+    theme_classic2() +
     theme(strip.background = element_rect(fill = FALSE)) +
     facet_wrap(~names, scales ="free_y", ncol = 2)
 
