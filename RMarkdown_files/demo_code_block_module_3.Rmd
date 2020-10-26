@@ -31,7 +31,7 @@ data <- read_excel("file.xlsx", sheet_names[4], skip = 1)
 
 With eval = TRUE, the code is run. 
 If we change eval=FALSE, the code is not run. 
-```{r colnames, fig.height=3, fig.width=3, message=FALSE}
+```{r colnames, fig.height=3, fig.width=3, eval=FALSE}
 # simplify column names for ease...
 colnames(data) <- c("thick", "biolum")
 

@@ -9,7 +9,7 @@ ggplot(data_2, aes(thick, express)) +
     stat_smooth(method = "lm", se = FALSE, color="black") +   
     xlab("Thickness (mm)") +   # label x-axis
     ylab("mRNA expression") +    # label y-axis
-    ggtitle("Croft et al, 2019, Figure 1h") +  # add a title
+    ggtitle("Croft et al, 2019, Figure 1m") +  # add a title
     scale_y_continuous(limits=c(-4,12), breaks=c(-4,-2,0,2,4,6,8,10,12)) +
     theme_classic()
 
