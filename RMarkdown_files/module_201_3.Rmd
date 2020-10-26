@@ -1,7 +1,7 @@
 ---
 title: "R for Biochemists 201 Module 3 - Using R Markdown for reproducible data analysis"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "August 2020"
+date: "October 2020"
 output:
   html_document:
     df_print: paged
@@ -11,11 +11,13 @@ output:
 
 ### Welcome to the third R for Biochemists 201 Training module.
 
-Each module is designed to take approximately 60 minutes to complete. 
-
-The material provided includes text to read, video demonstrations, an example R
-script with exercises. We hope you enjoy the modules. We welcome feedback and
-comments. 
+The teaching materials in this module are designed to take approximately 60
+minutes to work through. The exercises may take quite a bit longer as the
+material is getting more complex.Please be patient with yourself.
+Take breaks as you need. Completing all of this in a single sitting is probably
+not wise. The material provided includes text to read, video demonstrations,
+example R scripts with exercises. We hope you enjoy the module.
+We welcome feedback and comments.
 
 ### How to use this module 
 1. To learn from this module, watch the video and open a new R Markdown file. 
@@ -80,7 +82,7 @@ You can add headers of different levels
 one # is the top level header all the way down to six levels of header. 
 
 #### Bold and italic
-Using the asterix give *text in bold* using underscore _gives text in italics_
+Using two asterix gives **text in bold** using underscore _gives text in italics_
 
 #### Lists with numbers or bullets
 We can add unordered lists with asterix _*_ and ordered list with numbers. 
@@ -317,8 +319,8 @@ Edit it, make it yours and Knit it
 
 pagebreak \pagebreak
 
-### Code block options
-##### Fourth video - options for code blocks... 
+### Code chunk options
+##### Fourth video - options for code chunks... 
 Three key options:
     + showing and running the code
     + hiding and running the code to generate output
@@ -337,7 +339,7 @@ Three key options:
     + Word format that can be printed and shared
     + with different data in a similar format
     
-* We have explored the options for code blocks:
+* We have explored the options for code chunks:
     + showing and running the code
     + hiding and running the code to generate output
     + showing code but not running (evaluating) 
