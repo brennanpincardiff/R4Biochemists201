@@ -1,0 +1,21 @@
+---
+title: "favourite_molecule"
+author: "Paul Brennan"
+date: "23/09/2020"
+output: html_document
+---
+
+## My favourite molecule is the muscle protein action. 
+
+##### Key actin facts
+* Very common protein in human cells
+* Involved in cell movement especially muscles
+* 42 kDa in size.
+* more than one kind of molecule in humans. 
+
+A picture of actin ![](https://upload.wikimedia.org/wikipedia/commons/d/d3/Actin_with_ADP_highlighted.png)
+
+
+##### Sources 
+* https://en.wikipedia.org/wiki/Actin
+* https://www.uniprot.org/uniprot/P60709
