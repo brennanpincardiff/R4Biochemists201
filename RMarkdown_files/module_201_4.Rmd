@@ -288,6 +288,7 @@ how to commit a change and push it online.
 ### Exercise 3
 If you don't already have one, you will need to create an account
 for yourself on [Github.com](https://github.com/).
+
 Then, try creating your own My_Learning_R prjoect on Github. 
 
 * Put in a Readme. 
@@ -457,13 +458,23 @@ There is also a very good
 book about [Packages](http://r-pkgs.had.co.nz/) and how they can be organised. 
 
 ### Exercise 5
-Check out the 
+Try to complete the following
+
+* Using R-Studio, create a new project and download the drawProteins package.
+The link is: https://github.com/brennanpincardiff/drawProteins
+
+* Open the vignette - an R-Markdown file showing how to use drawProteins. 
+
+* Try Knitting the R-Markdown file. 
+
+* Create your own R-Markdown file to use drawProteins to generate a schematic 
+of your favourite protein. 
+
+* Then try publishing this and share the link below. 
+
+Check out the online 
 [vignette for drawProteins](https://www.bioconductor.org/packages/release/bioc/vignettes/drawProteins/inst/doc/drawProteins_BiocStyle.html). 
-For instructions on how to install the package go the the
-[Bioconductor](https://www.bioconductor.org/packages/release/bioc/html/drawProteins.html) home page.
-Use drawProteins to generate a
-schematic of your favourite protein. Maybe add this code to the RMarkdown
-file that you created earlier in the course. Remember you can show some or
+Remember you can show some or
 all of the of the code in your RMarkdown file. 
 
 
