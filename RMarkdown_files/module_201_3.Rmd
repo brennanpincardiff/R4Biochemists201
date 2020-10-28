@@ -13,7 +13,7 @@ output:
 
 The teaching materials in this module are designed to take approximately 60
 minutes to work through. The exercises may take quite a bit longer as the
-material is getting more complex.Please be patient with yourself.
+material is getting more complex. Please be patient with yourself.
 Take breaks as you need. Completing all of this in a single sitting is probably
 not wise. The material provided includes text to read, video demonstrations,
 example R scripts with exercises. We hope you enjoy the module.

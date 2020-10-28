@@ -9,11 +9,13 @@ output: html_document
 
 ### Welcome to Module 4 of the R for Biochemists 201 Training module.
 
-Each module is designed to take approximately 60 minutes to complete. 
-
-The material provided includes text to read, video demonstrations, an example R
-script with exercise. We hope you enjoy the modules. We welcome feedback and
- comments. 
+The teaching materials in this module are designed to take approximately 60
+minutes to work through. The exercises may take quite a bit longer as the
+material is getting more complex. Please be patient with yourself.
+Take breaks as you need. Completing all of this in a single sitting is probably
+not wise. The material provided includes text to read, video demonstrations,
+example R scripts with exercises. We hope you enjoy the module.
+We welcome feedback and comments.
 
 ### How to use this module 
 1. To learn from this module, cut and paste the R code into R-Studio and then run the code line by line. 
@@ -21,24 +23,35 @@ script with exercise. We hope you enjoy the modules. We welcome feedback and
 3. Watch the demonstration videos to see how the code works
 4. Look at how the 'Global Environment' changes.
 5. Change the code and test it
-6. Try the exercises at the end
+6. Try the exercises
 7. Extend your learning using the resources at the end
 
 ### Learning Objectives for Module 4
 * Understand & write functions 
 * Document a function
-* Version Control
+* A little about Version Control and Git
 * Exploring packages 
 
 
-As we deepen our knowledge and usage of R, it becomes useful to create functions. Functions can create a workflow, can be combination of other functions or can be a detailed programming or calculations. 
-When are you ready to create a function? Well, if you find yourself using the same commands or pieces of workflow multiple times then it suggests that you could benefit from creating a function that brings these together. If you generate data in the same way and analyse in the same way, you could benefit from a workflow that brings together. 
-Three is usually the 'magic' number. If you have or plan to repeat the same analysis three times you could probably write better code and reduce your work by writing some functions. 
+As we deepen our knowledge and usage of R, it becomes useful to create 
+functions. Functions can create a workflow, can be combination of other
+functions or can be a detailed programming or calculations.
+
+When are you ready to create a function? Well, if you find yourself using the
+same commands or pieces of workflow multiple times then it suggests that you
+could benefit from creating a function that brings these together. If you
+generate data in the same way and analyse in the same way, you could benefit
+from a workflow that brings together. 
+
+Three is usually the 'magic' number. If you have or plan to repeat the same
+analysis three times you could probably write better code and reduce your work
+by writing some functions. 
+
 To create a function, we use the function() function. 
 Let's look at Croft Figure 4f.
 
 
-```{r packages_we_need}
+```{r packages_we_need, message=FALSE}
 library(readxl)
 library(dplyr)
 library(ggplot2)
@@ -52,7 +65,7 @@ We are going to explore the data in
 [Figure 4f](https://www.nature.com/articles/s41586-019-1263-7/figures/4) 
 from the Croft (2019) paper. There are panels about Leukocytes, Neutrophils and
 Macrophages so we are going to create a function that links together the
-workflow for each of the three panels. 
+workflow required for each of the three panels. 
 
 The [data is available](https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx).
 
@@ -71,7 +84,7 @@ Our workflow is:
 
 ### Writing functions
 ##### First video - writing a function... 
-```{r get_data_for_Fig_4f}
+```{r get_data_for_Fig_4f, message=FALSE}
 link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx"
 
 # the download.file() function downloads and saves the file with the name given
@@ -97,15 +110,19 @@ data <- read_excel("file.xlsx")
 
 
 Our workflow is basically the same as before. 
+
 Steps:
+
 1. Extract cell type we want to plot - this will be an argument of our function
 2. Transform the data
 3. Generate the plot
 4. Customise the plot
-Usually, I try to make it work for one element and then turn it into a function. Once it is a function, I test it on the original data and then use it on the rest. 
-This is the code for our workflow:
 
+Usually, I try to make a script work for one part of the data and then turn 
+that script into a function. Once it is a function, I test it on the starting
+data and then use it on the rest of the data. 
 
+This is the script for our workflow:
 ```{r first_workflow}
 # select out the rows we want with filter() function for "Leucocytes"
 # gather without cell_type and treatment
@@ -129,7 +146,8 @@ plot_l <- ggplot(data = data_2,
 plot_l
 ```
 
-Now we turn it into a function. 
+Now we turn it into a function using the function() function. 
+In the brackets are the arguments for our function. 
 
 ```{r make_function}
 ## make a function called my_workflow
@@ -152,7 +170,7 @@ my_workflow <- function(data, a_cell_type){
              subtitle = "Croft et al (2019) Nature 570:246–251 (2019)") +
         theme_classic() + theme(legend.position="none")
     
-    # this returns the plot and is key!  
+    # this returns the plot that we want.   
     return(plot)
 }
 
@@ -160,7 +178,7 @@ my_workflow <- function(data, a_cell_type){
 
 Please note here is that a new part has been created in my Global
 Environment entitled Functions. 
-In this is the function called my_workflow.
+In this new part of my Global Environment is the function called my_workflow.
 
 ```{r check_function}
 # check_function
@@ -170,10 +188,11 @@ leuco_plot <- my_workflow(data, cell_types[1])
 leuco_plot
 
 # do a visual check that the same object as the script above
+# it is possible to automatic checks too but that's for the future. 
 ```
 
 
-Now use the function to generated two new plots with different cell types. 
+Now use the function to generate two new plots with different cell types. 
 
 ```{r use_function}
 # now plot for other cell types
@@ -189,14 +208,14 @@ macro_plot
 ```
 
 
-### Exercise 1
+#### Exercise 1
 Please create a function to add the statistical tests that we have used before. 
 As I mentioned, I usually approach this by getting it right for one plot first
 and then test and use the function. 
 There are different ways to do this but do have a play and try to work out
 what to do. 
 
-### Answers for Exercise 1
+#### Answers for Exercise 1
 Here is an example of a function that will add the statistical tests.
 ```{r exercise_1_answer} 
 # use ggpubr
@@ -204,14 +223,14 @@ Here is an example of a function that will add the statistical tests.
 
 
 ### Our second advanced theme is documentation
-##### Second video - document your function control... 
+##### Second video - document your function... 
 
 We can create functions in our script files or R-markdown files. However, 
 if we are using functions across multiple files, we might want to save them
 separately.
 
 To do this, create a new R script file with a meaningful name and cut and paste
-our fuction. In this case we are making a file called `workflow_fig4f.R`
+our fuction. In this case, we are making a file called `workflow_fig4f.R`
 
 To use the function, the source() function will bring it into the Global
 Environment. 
@@ -230,6 +249,7 @@ There is a short cut that will do this Ctrl+Shift+Alt+R.
 
 The Roxygen tags use #' and @ symbols. Here is an example:
 
+```{r roxygen_demo, eval=FALSE} 
 #' Title
 #'
 #' @param data 
@@ -243,6 +263,8 @@ The Roxygen tags use #' and @ symbols. Here is an example:
 @param refers to paramaters 
 @return tells you what is returned. 
 @export is necessary if you are including your function in a package. 
+```
+
 
 We can add more information so that we know what the function does. 
 
@@ -264,18 +286,21 @@ There is a video shows you how to get R-Studio working with Github,
 how to commit a change and push it online.
 
 ### Exercise 3
-You will need to create an account for yourself on
-[Github.com](https://github.com/).
-Then, try creating your own My_Learning_R prjoect on Github. Put in 
-a Readme. 
-Then clone it into a new R Studio project. Write some code for the analysis of 
-some data. Stage it and commit the change onto Github. 
-See if you can make it all work together. 
-Make more changes and repeat the process. 
-Share the address of your Github repo so that we can see
-your progress. 
-You have taken a key next step towards being a programmer.
+If you don't already have one, you will need to create an account
+for yourself on [Github.com](https://github.com/).
+Then, try creating your own My_Learning_R prjoect on Github. 
 
+* Put in a Readme. 
+* Clone it into a new R Studio project. 
+* Write some code for the analysis of some data. 
+* Stage your change and commit the change 
+* Push those changes onto Github. 
+* See if you can make it all work together. 
+* Make more changes and repeat the process. 
+* Share the address of your Github repo to share your progress. 
+
+If you can make this work, you have taken a key next step towards being a
+programmer. Do ask questions if you need help. 
 
 pagebreak \pagebreak
 
@@ -401,7 +426,7 @@ https://github.com/LCBC-UiO/ggseg
 
 
 ### Answers Exercise 4
-```{r download_ggseg}
+```{r exercise_4_download_ggseg}
 # install
 # devtools::install_github("LCBC-UiO/ggseg", build_vignettes = TRUE)
 library(ggseg)
@@ -432,26 +457,46 @@ There is also a very good
 book about [Packages](http://r-pkgs.had.co.nz/) and how they can be organised. 
 
 ### Exercise 5
-Download and check out the vignette for drawProteins
-https://github.com/brennanpincardiff/drawProteins
-Use drawProteins to generate a schematic of your favourite protein. 
+Check out the 
+[vignette for drawProteins](https://www.bioconductor.org/packages/release/bioc/vignettes/drawProteins/inst/doc/drawProteins_BiocStyle.html). 
+For instructions on how to install the package go the the
+[Bioconductor](https://www.bioconductor.org/packages/release/bioc/html/drawProteins.html) home page.
+Use drawProteins to generate a
+schematic of your favourite protein. Maybe add this code to the RMarkdown
+file that you created earlier in the course. Remember you can show some or
+all of the of the code in your RMarkdown file. 
+
 
 
 ### Answers Exercise 5
-```{r download_drawProteins}
+```{r download_drawProteins, eval=FALSE}
 # download drawProteins from Bioconductor
 # install BiocManager
 # install.packages("BiocManager")
 # BiocManager::install("drawProteins")
 
 library(drawProteins)
-# show the vignette for drawProteins
+# show the vignette for drawProteins in the Help tab
 vignette("drawProteins_BiocStyle")
-# sample code is here... 
+# sample code is in the vignette... explore it. 
 
-# integrate your learning by adding the code and output to your Github page you 
-# created above...
+# integrate your learning by adding the code and output to your RMarkdown file
+# and/or the Github page you created above...
 ```
+
+Here is a little code and the output to illustrate.
+
+```{r exercise_5_drawProteins_example}
+library(drawProteins)
+drawProteins::get_features("Q04206") -> rel_json
+feature_to_dataframe(rel_json) -> rel_data
+draw_canvas(rel_data) -> p
+p <- draw_chains(p, rel_data)
+p <- draw_domains(p, rel_data)
+draw_regions(p, rel_data)
+```
+
+
 
 pagebreak \pagebreak
 
