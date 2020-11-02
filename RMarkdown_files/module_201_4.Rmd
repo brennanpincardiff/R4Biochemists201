@@ -362,10 +362,10 @@ and even contribute to them as your skills develop.
 
 Sources of packages:
 
-1. CRAN
-2. Bioconductor
-3. R-OpenSci
-4. Github
+1. [CRAN](https://cran.r-project.org/web/packages/available_packages_by_name.html)
+2. [Bioconductor](http://bioconductor.org/)
+3. [R-OpenSci](https://ropensci.org/)
+4. [Github](https://github.com/)
 
 A good place to explore for packages is Bioconductor. These are
 packages for Bioinformatics and can be used to explore biological data.
