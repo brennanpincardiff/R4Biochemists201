@@ -218,7 +218,54 @@ what to do.
 #### Answers for Exercise 1
 Here is an example of a function that will add the statistical tests.
 ```{r exercise_1_answer} 
-# use ggpubr
+# module_201_4_ans_ex_1
+
+### activate the packages
+library(tidyverse)
+library(readxl)
+library("ggpubr")
+
+### download the data
+link <- c("https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/fig_4f.xlsx?raw=true")
+
+# the download.file() function downloads and saves the file with the name given
+download.file(url=link, destfile="file.xlsx", mode="wb")
+
+data <- read_excel("file.xlsx")
+
+### this function is will add the ANOVA 
+### is uses the ggboxplot() from the ggpubr package
+stat_flow <- function(data, a_cell_type){
+    # select out the rows we want with filter() function
+    data %>% 
+        filter(cell_type == a_cell_type) %>% 
+        gather(cell_number, mice, -cell_type, -treatment)  %>%    
+        mutate(treatment = factor(treatment, c("Sham_1", "THY-", "Sham_2","THY+"))) -> data_2
+    
+    ggboxplot(data_2, x = "treatment", y = "mice", add = "jitter",
+              xlab = "",
+              ylab = "") +
+        stat_compare_means(method = "anova")
+    }
+
+### use the function
+p1 <- stat_flow(data, "Leucocytes")
+p2 <- stat_flow(data, "Neutrophils")
+p3 <- stat_flow(data, "Macrophages")
+
+### arrange the three graphs on one page...
+figure <- ggarrange(p1, p2, p3, nrow=1,
+          labels = c("A.Leucocytes",
+                     "B.Neutrophils",
+                     "C.Macrophages"))
+
+# http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
+
+annotate_figure(figure, 
+                top = text_grob("Figure 4f from Croft et al (2019) Nature 570:246–251",
+                color = "red", face = "bold", size = 14))
+
+
 ```
 
 
@@ -435,6 +482,7 @@ ggseg(atlas=aseg)
 
 ```
 
+### Looking at packages on Github
 It is interesting to check out the details of a package on Github if it
 is there. Here is a the Github repo for
 [gganatogram](https://github.com/jespermaag/gganatogram). By looking at various
@@ -460,23 +508,26 @@ book about [Packages](http://r-pkgs.had.co.nz/) and how they can be organised.
 ### Exercise 5
 Try to complete the following
 
-* Using R-Studio, create a new project and download the drawProteins package.
-The link is: https://github.com/brennanpincardiff/drawProteins
-
+* Within Github, fork the drawProteins repository to your own area. The original is here: https://github.com/brennanpincardiff/drawProteins.
+* Then, using R-Studio, create a new project and download your own drawProteins package.
 * Open the vignette - an R-Markdown file showing how to use drawProteins. 
-
 * Try Knitting the R-Markdown file. 
-
 * Create your own R-Markdown file to use drawProteins to generate a schematic 
-of your favourite protein. 
+of your favourite protein (or adapt your file from Module 3). 
+* Try publishing your R-Markdown on Rpubs perhaps. Share the link online. 
+* Remember you can use version control to store your work as you go along. 
 
-* Then try publishing this and share the link below. 
 
 Check out the online 
 [vignette for drawProteins](https://www.bioconductor.org/packages/release/bioc/vignettes/drawProteins/inst/doc/drawProteins_BiocStyle.html). 
 Remember you can show some or
 all of the of the code in your RMarkdown file. 
 
+This exercise should integrate lots of what you have learned in Module 3 and 4. 
+I haven't supplied a solution to this. I would rather see your results on RPubs,
+Github or both. 
+
+Please ask questions if you need help. 
 
 
 ### Answers Exercise 5
