@@ -3,10 +3,10 @@ title: "R for Biochemists 201 Module 3 - Using R Markdown for reproducible data 
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
 date: "October 2020"
 output:
-  word_document: default
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
+  word_document: default
 ---
 
 ### Welcome to the third R for Biochemists 201 Training module.
@@ -296,7 +296,7 @@ As an example for this video, I am going to use the R Markdown file for this
 module. It is available on [Github](https://github.com/brennanpincardiff/R4Biochemists201/blob/master/RMarkdown_files/module_201_3.Rmd). 
 
 You can download it with this code:
-```{r, more_for_exercise_2, eval= FALSE}
+```{r, download_Rmd_mod_3, eval= FALSE}
 # download Rmd file for module 3 from the internet and open in R-Studio
 link <- "https://raw.githubusercontent.com/brennanpincardiff/R4Biochemists201/master/RMarkdown_files/module_201_3.Rmd"
 download.file(url=link, destfile="module_201_3.Rmd", mode="wb")
@@ -321,7 +321,7 @@ code and see if you can get it to work.
 Check out my R journey
 
 You can download it with this code:
-```{r, more_for_exercise_2, eval= FALSE}
+```{r, download_Rmd_paul_story, eval= FALSE}
 link <- "https://raw.githubusercontent.com/brennanpincardiff/R4Biochemists201/master/RMarkdown_files/data_for_good_Cardiff.Rmd"
 download.file(url=link, destfile="paul_R_story.Rmd", mode="wb")
 file.edit("paul_R_story.Rmd")
