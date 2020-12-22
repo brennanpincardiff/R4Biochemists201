@@ -114,7 +114,7 @@ Please test your knowledge by creating a new R Markdown file.
 
 
 ### Answers for Exercise 1
-A video showing you how I did this...
+A video showing you how I did this is available online. 
 
 ### Let's analyse some data in your R Markdown file
 We are going to continue with data from the 2019 Nature publication by Croft 

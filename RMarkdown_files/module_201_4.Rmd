@@ -27,15 +27,15 @@ We welcome feedback and comments.
 7. Extend your learning using the resources at the end
 
 ### Learning Objectives for Module 4
-* Understand & write functions 
+* Write a function 
 * Document a function
-* A little about Version Control and Git
-* Exploring packages 
+* Introduce version control and Git
+* Explore some packages 
 
 
 As we deepen our knowledge and usage of R, it becomes useful to create 
 functions. Functions can create a workflow, can be combination of other
-functions or can be a detailed programming or calculations.
+functions or can be a new set of actions or calculations.
 
 When are you ready to create a function? Well, if you find yourself using the
 same commands or pieces of workflow multiple times then it suggests that you
@@ -463,7 +463,7 @@ organPlot <- data.frame(organ = c("heart", "leukocyte", "nerve", "brain", "liver
 
  head(organPlot)
 
-gganatogram(data=organPlot, fillOutline='#a6bddb', organism='human', sex='male', fill="colour")
+gganatogram(data=organPlot, fillOutline='#a6bddb', organism='human', sex='female', fill="colour")
 
 ```
 
