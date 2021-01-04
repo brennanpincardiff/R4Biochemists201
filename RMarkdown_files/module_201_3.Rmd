@@ -1,7 +1,7 @@
 ---
 title: "R for Biochemists 201 Module 3 - Using R Markdown for reproducible data analysis"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "October 2020"
+date: "January 2021"
 output:
   html_document:
     df_print: paged
@@ -336,7 +336,7 @@ I have published my story here.
 pagebreak \pagebreak
 
 ### Answers for Exercise 3
-The Rmd source file for my R journey is here [link]. 
+The Rmd source file for my R journey is [here](https://github.com/brennanpincardiff/R4Biochemists201/blob/master/RMarkdown_files/data_for_good_Cardiff.Rmd). 
 You can download it, open it in R-Studio.
 Edit it, make it yours and Knit it 
 

@@ -1,9 +1,10 @@
 ---
 title: "R for Biochemists 201 Module 4 - Functions & Packages"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "October 2020"
-output: html_document
-#  word_document: default
+date: "January 2021"
+output: 
+# html_document
+  word_document: default
 #  pdf_document: default
 ---
 
