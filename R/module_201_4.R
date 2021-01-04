@@ -1,11 +1,11 @@
-## ----packages_we_need, message=FALSE-------------------------------------------------
+## ----packages_we_need, message=FALSE---------------------------------------------------
 library(readxl)
 library(dplyr)
 library(ggplot2)
 library(tidyr)
 
 
-## ----get_data_for_Fig_4f, message=FALSE----------------------------------------------
+## ----get_data_for_Fig_4f, message=FALSE------------------------------------------------
 link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM10_ESM.xlsx"
 
 # the download.file() function downloads and saves the file with the name given
@@ -16,7 +16,7 @@ sheet_names <- excel_sheets("file.xlsx")
 data <- read_excel("file.xlsx", sheet_names[6])
 
 
-## ----get_easier_data_for_Fig_4f------------------------------------------------------
+## ----get_easier_data_for_Fig_4f--------------------------------------------------------
 link <- c("https://github.com/brennanpincardiff/R4Biochemists201/blob/master/data/fig_4f.xlsx?raw=true")
 
 # the download.file() function downloads and saves the file with the name given
@@ -25,7 +25,7 @@ download.file(url=link, destfile="file.xlsx", mode="wb")
 data <- read_excel("file.xlsx")
 
 
-## ----first_workflow------------------------------------------------------------------
+## ----first_workflow--------------------------------------------------------------------
 # select out the rows we want with filter() function for "Leucocytes"
 # gather without cell_type and treatment
 # mutate treatment into a factor to plot in the correct order
@@ -48,7 +48,7 @@ plot_l <- ggplot(data = data_2,
 plot_l
 
 
-## ----make_function-------------------------------------------------------------------
+## ----make_function---------------------------------------------------------------------
 ## make a function called my_workflow
 
 my_workflow <- function(data, a_cell_type){
@@ -75,7 +75,7 @@ my_workflow <- function(data, a_cell_type){
 
 
 
-## ----check_function------------------------------------------------------------------
+## ----check_function--------------------------------------------------------------------
 # check_function
 cell_types <- unique(data$cell_type)
 cell_types[1] # this is Leucocytes and should work...
@@ -86,7 +86,7 @@ leuco_plot
 # it is possible to automatic checks too but that's for the future. 
 
 
-## ----use_function--------------------------------------------------------------------
+## ----use_function----------------------------------------------------------------------
 # now plot for other cell types
 
 cell_types[2] # this is Leucocytes and should work...
@@ -99,16 +99,13 @@ neutro_plot
 macro_plot
 
 
-## ----exercise_1_answer---------------------------------------------------------------
-# use ggpubr
 
-
-## ----bring_in_function, eval=FALSE---------------------------------------------------
+## ----bring_in_function, eval=FALSE-----------------------------------------------------
 ## source("/Users/paulbrennan/Documents/R4Biochemists201/R/workflow_fig4f.R")
 ## 
 
 
-## ----roxygen_demo, eval=FALSE--------------------------------------------------------
+## ----roxygen_demo, eval=FALSE----------------------------------------------------------
 ## #' Title
 ## #'
 ## #' @param data
@@ -124,7 +121,7 @@ macro_plot
 ## @export is necessary if you are including your function in a package.
 
 
-## ----download_from_Bioconductor------------------------------------------------------
+## ----download_from_Bioconductor--------------------------------------------------------
 # install BiocManager
 # install.packages("BiocManager")
 # BiocManager::install("flowCore")
@@ -192,7 +189,7 @@ ggarrange(p1, p2, p3, text.p, ncol=1,
 
 
 
-## ----download_from_github------------------------------------------------------------
+## ----download_from_github--------------------------------------------------------------
 ## install from Github
 # remove the hash tag to run. 
 #devtools::install_github("jespermaag/gganatogram")
@@ -209,19 +206,11 @@ organPlot <- data.frame(organ = c("heart", "leukocyte", "nerve", "brain", "liver
 
  head(organPlot)
 
-gganatogram(data=organPlot, fillOutline='#a6bddb', organism='human', sex='male', fill="colour")
+gganatogram(data=organPlot, fillOutline='#a6bddb', organism='human', sex='female', fill="colour")
 
 
 
-## ----download_ggseg------------------------------------------------------------------
-# install
-# devtools::install_github("LCBC-UiO/ggseg", build_vignettes = TRUE)
-library(ggseg)
-ggseg(atlas=aseg)
-
-
-
-## ----download_drawProteins, eval=FALSE-----------------------------------------------
+## ----download_drawProteins, eval=FALSE-------------------------------------------------
 ## # download drawProteins from Bioconductor
 ## # install BiocManager
 ## # install.packages("BiocManager")
@@ -234,6 +223,5 @@ ggseg(atlas=aseg)
 ## 
 ## # integrate your learning by adding the code and output to your RMarkdown file
 ## # and/or the Github page you created above...
-
 
 
