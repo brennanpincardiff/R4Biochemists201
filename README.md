@@ -10,4 +10,6 @@ teaching materials.
 Some data is present in the data folder. 
 
 Questions about these materials should be addressed to Dr Paul Brennan. 
-Conctact can be made by email, twitter or by Github. 
+Contact can be made by email (brennanpincardiff@gmail.com), 
+[twitter](https://twitter.com/brennanpcardiff) (@brennanpcardiff) 
+or here on Github. Issues and pull requests are welcome.  
