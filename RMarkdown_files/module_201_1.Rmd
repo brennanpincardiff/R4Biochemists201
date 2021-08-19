@@ -1,7 +1,7 @@
 ---
-title: "R for Biochemists 201 Module 1 - Bar charts & beyond with tidy data"
+title: "R for Biochemists 201 Module 1 - Tidy data and some advanced visualisations"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "Oct 2020"
+date: "Aug 2021"
 output:
   html_document:
     df_print: paged
@@ -10,10 +10,14 @@ output:
 ---
 
 ### Welcome to the first R for Biochemists 201 Training module.
+With R201, our material is more advanced and it may take you a while to
+complete. In our pilot, learners took approximately 90 minutes to complete this
+module. Please don't worry if it takes you longer. Rather be patient with 
+yourself and try to keep learning.  
 
-Each module is designed to take approximately 60 minutes to complete. 
-
-The material provided includes text to read, video demonstrations, an example R script with exercise. We hope you enjoy the modules. We welcome feedback and comments. 
+The material provided includes text to read, video demonstrations, an
+example R script with exercise. We hope you enjoy the modules. We welcome
+feedback and comments. 
 
 ### How to use this module 
 1. To learn from this module, cut and paste the R code into R-Studio and then run the code line by line. 
@@ -41,6 +45,15 @@ library(tidyr)
 
 ### Introducing tidy data
 ##### First video - Tidy data 
+
+In this video, I introduce the concept of Tidy Data and demonstrate ways
+to reformat data. I use both the functions gather() and pivot_longer() to
+make “wide” data longer.
+
+I recommend you watch the whole video before playing with
+the data. 
+
+There are examples in the video of "untidy" in Excel. 
 
 ```{r data_for_tidying}
 # first example - relatively simple
@@ -94,6 +107,25 @@ ggplot(data2, aes(x = Conc, y = apop)) + geom_point() +
     scale_x_log10() 
 ```
 
+Both gather() and pivot_longer() can be used to make “wide” data longer. 
+It is worth noting that gather() is no longer being developed but I mention it
+here because it is used in scripts online. The pivot_longer() function is 
+advised for future use.
+
+For more information on these two functions, check out these links:
+
+* [gather()](https://tidyr.tidyverse.org/reference/gather.html) 
+* [pivot_longer()](https://tidyr.tidyverse.org/reference/pivot_longer.html) 
+
+Please, have a go at tidying the data yourself using the code you downloaded on the previous page. If you have questions about the Tidy Data format, please use the comments section below.
+
+###### Resources about tidy data:
+* ['Informal' summary of the tidy data paper](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html)
+* The original paper: [Wickham, H (2014)“Tidy data” The Journal of Statistical Software, 59](https://vita.had.co.nz/papers/tidy-data.html)
+* [R for Data Science Chapter on Tidy Data](https://r4ds.had.co.nz/tidy-data.html)
+* A longer video from [Garrett Grolemund of R-Studio](https://www.youtube.com/watch?v=1ELALQlO-yM] about data wrangling with R and the Tidyverse)
+* [A talk by Ryan Hafen about coronavirus data by which talks about data structure (from 20 minutes in)](https://www.youtube.com/watch?v=6N1p99bLXjk&t=1249s)
+* [A blog post about tidy data for Developmental Biologists](https://thenode.biologists.com/converting-excellent-spreadsheets-tidy-data/education/)
 
 
 
@@ -120,17 +152,30 @@ The [data is available](https://static-content.springer.com/esm/art%3A10.1038%2F
 The Excel file has 9 worksheets - each sheet corresponding to a part of the 
 figure. 
 
-Our workflow is 
+**Our workflow is:**
+
 1. Import the data
 2. Tidy our data (also known as wrangling or munging)
 3. Transform or summarise
 4. Visualize
 
-![Data Analysis Workflow](https://github.com/hadley/r4ds/blob/master/diagrams/data-science-communicate.png)
+**![Data Analysis Workflow](https://github.com/hadley/r4ds/raw/master/diagrams/data-science-communicate.png)**
 
 
 ### Importing our data in R
 ##### Second video - importing and tidying our data 
+
+In this video, we download the data from the Nature Journal website. 
+We use the dplyr package to tidy and reformat the data.
+
+We also use this symbol: %>% 
+This is called a pipe and allows us to link our data into our functions
+and put functions together in a workflow. It comes as part of the
+tidyverse and some of its packages, but can also be used by loading a
+specific package called
+[magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html). 
+Pipes are explained in more detail later.
+
 ```{r get_data_for_Fig_1b}
 link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx"
 
@@ -163,6 +208,13 @@ data_2 <- gather(data, na.rm = TRUE)
 data_2 %>% mutate(key = factor(key, c("Control", "Resolving", "RA"))) -> data_3
 ```
 
+In the video, I also talk about changing our key into a factor with
+three values. This is quite an important point. Factors are used to
+work with categorical variables. For more information about factors,
+check out the start of the
+[Factors chapter in R for Data Science](https://r4ds.had.co.nz/factors.html).
+
+
 ### Exercise 1
 You can test your knowledge with the data for Figure 1j from the same 
 publication.
@@ -177,10 +229,12 @@ Here is the code
 data_1j <- read_excel("file.xlsx", sheet_names[5])
 
 # data in wide format...
-# put into long tidy format... with gather and spread...
-data_1j_l <- gather(data_1j, na.rm = TRUE)
+# put into long tidy format... with pivot_longer()
+data_1j_l <- pivot_longer(data_1j, cols = Control:STIA)
+# this will work but will require changes later. 
+# data_1j_l <- gather(data_1j, na.rm = TRUE)
 # make the key a factor - important for graphing and stats
-data_1j_l %>% mutate(key = factor(key, c("Control", "STIA"))) -> data_1j_lf
+data_1j_l %>% mutate(name = factor(name, c("Control", "STIA"))) -> data_1j_lf
 ```
 Does the data look correct to you?
 
@@ -229,11 +283,16 @@ ggplot(data_3_stats, aes(key, value)) +
 
 # bar chart plot
 ggplot(data_3, aes(key, value)) +
-    geom_bar(stat = "summary", fun.y = "mean") +
+    geom_bar(stat = "summary", fun = "mean") +
     geom_errorbar(data = data_3_stats, aes(ymin=value-sd, ymax=value+sd), 
                   width=.2,
                   position=position_dodge(.9)) 
 ```
+
+Bar plots have real limitations. For information about the weakness of dynamite
+plots (bar plots with error bars), please read this article entitled
+["dynamite plots must die"](https://simplystatistics.org/2019/02/21/dynamite-plots-must-die/).
+
 
 I have to confess that I don't really like either of these plots. 
 What can we do better? Well we can show the points to show the variation 
@@ -268,31 +327,32 @@ pagebreak \pagebreak
 
 ### Exercise 2
 Using the data from Figure 1j, play with the data to plot 
+
 * A bar chart
 * The points with geom_jitter
 
 ### Answers for Exercise 2
 ```{r, eval=FALSE}
 # bar plot
-ggplot(data_1j_lf, aes(key, value)) +
+ggplot(data_1j_lf, aes(name, value)) +
     geom_bar(stat = "summary", fun = "mean")
 
 # calculating
 data_1j_lf %>%
-    group_by(key) %>%
+    group_by(name) %>%
     summarise(mean(value)) -> data_1j_stats
-colnames(data_1j_stats) <- c("key", "mean")
+colnames(data_1j_stats) <- c("name", "mean")
 
 # mean as a line and geom_jitter
-ggplot(data_1j_stats, aes(key, mean)) + 
+ggplot(data_1j_stats, aes(name, mean)) + 
     geom_point(shape = 95, size = 8) +
     geom_jitter(data=data_1j_lf, 
-    aes(key, value, colour=key), width = 0.1)
-
-
+    aes(name, value, colour=name), width = 0.1)
 
 ```
 
+
+Feedback from the pilot course suggested that many learners missed the function argument for geom_bar(). The ggplot2 package will probably give a Warning and default to using mean. Please remember that there is a difference between an Error and a Warning. 
 
 pagebreak \pagebreak
 
@@ -318,7 +378,7 @@ from geom_boxplot() or we will plot those twice.
 ```{r box_whisker_with_points}
 ggplot(data_3, aes(key, value, shape = key, colour=key)) +
      geom_boxplot(outlier.size=0) +
-    geom_jitter(width = 0.1)
+     geom_jitter(width = 0.1)
 
 ```
 
@@ -347,26 +407,31 @@ pagebreak \pagebreak
 ### Answers for Exercise 3
 Here is the code 
 ```{r} 
-ggplot(data_1j_lf, aes(key, value, colour=key)) +
+ggplot(data_1j_lf, aes(name, value, colour=name)) +
      geom_boxplot() +
     geom_jitter(width = 0.1)
 
-ggplot(data_1j_lf, aes(key, value, colour=key)) +
+ggplot(data_1j_lf, aes(name, value, colour=name)) +
      geom_violin() +
     geom_jitter(width = 0.1)
-
 
 ```
 pagebreak \pagebreak
 
 ### Bring workflow together with pipes
-With the option of pipes we can put all of this together in a 
+One of the key features of using this Tidyverse workflow is that we can link
+our analysis together to make a workflow. As we have seen earlier in the
+module, the symbol **%>%** is called a pipe and links our data into our
+functions. The video on line explains pipes in more detail.
+
+Using pipes we can put all of this together in a 
 workflow and add labels and a source. 
+
 ```{r} 
 data %>%
-    gather(na.rm = TRUE) %>%
-    mutate(key = factor(key, c("Control", "Resolving", "RA"))) %>%
-    ggplot(aes(key, value, shape = key, colour=key)) +
+    pivot_longer(cols = Control:RA) %>%
+    mutate(name = factor(name, c("Control", "Resolving", "RA"))) %>%
+    ggplot(aes(name, value, shape = name, colour=name)) +
      geom_boxplot(outlier.size=0) +
      geom_jitter(width = 0.1) +
      ylim(0,0.2) + 
@@ -378,13 +443,17 @@ data %>%
 
 ```
 
+In the video, I set limits on the y-axis using ylim(). You can use xlim()
+to set limits on the x-axis. You can read more about setting 
+[scale limits here](https://ggplot2.tidyverse.org/reference/lims.html).
+
 Do you think you could do this with the data for Figure 1c?
 
 ```{r} 
 data_1j %>%
-    gather(na.rm = TRUE) %>%
-    mutate(key = factor(key, c("Control", "STIA"))) %>%
-    ggplot(aes(key, value, shape = key, colour=key)) +
+    pivot_longer(cols = Control:STIA) %>%
+    mutate(name = factor(name, c("Control", "STIA"))) %>%
+    ggplot(aes(name, value, shape = name, colour=name)) +
      geom_boxplot(outlier.size=0) +
      geom_jitter(width = 0.1) +
      ylim(0,0.2) + 
@@ -402,7 +471,7 @@ pagebreak \pagebreak
 ### Review what we have learned
 * We have imported data from the internet.
 * Our workflow
-    + tidy the data with dplyr::gather()
+    + tidy the data with dplyr::pivot_longer()
     + calculate means with dplyr::summarise()
     + visualise the data with ggplot2::geom_bar()
     
@@ -416,10 +485,10 @@ pagebreak \pagebreak
 
 ### Resources
 * You could move onto Module 2 - Calculating and adding p-values.
-* Try out a script from the R for Biochemists website <https://rforbiochemists.blogspot.com/2019/01/making-box-and-whisker-plot-with-some.html>
-* Check out Tidy Data chapter of R for Data Science)<https://r4ds.had.co.nz/tidy-data.html>
-* Check out Transform chapter of R for Data Science - lots about dplyr<https://r4ds.had.co.nz/transform.html>
-* More about geom_bar()<https://ggplot2.tidyverse.org/reference/geom_bar.html>
+* [Try out a script from the R for Biochemists website](https://rforbiochemists.blogspot.com/2019/01/making-box-and-whisker-plot-with-some.html)
+* Check out [Tidy Data chapter of R for Data Science](https://r4ds.had.co.nz/tidy-data.html)
+* Check out [Transform chapter of R for Data Science - lots about dplyr](https://r4ds.had.co.nz/transform.html)
+* More about [geom_bar()](https://ggplot2.tidyverse.org/reference/geom_bar.html)
 
-* More geom_boxplot()<https://ggplot2.tidyverse.org/reference/geom_boxplot.html> 
-* More geom_violin()<https://ggplot2.tidyverse.org/reference/geom_violin.html>
+* More about [geom_boxplot()](https://ggplot2.tidyverse.org/reference/geom_boxplot.html) 
+* More about [geom_violin()](https://ggplot2.tidyverse.org/reference/geom_violin.html)
