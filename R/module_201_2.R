@@ -142,7 +142,7 @@ plot + stat_compare_means(comparisons = my_comparisons, method = "t.test",
 plot <- plot + stat_compare_means(comparisons = my_comparisons, method = "t.test",
         paired = TRUE, size = 2,
         symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
-            symbols = c("****","***", "***", "ns"))) +
+            symbols = c("****","***", "**", "ns"))) +
     theme(strip.background = element_rect(fill = FALSE))
 
 # show the object

@@ -10,7 +10,7 @@ boxplot <- ggplot(tidy_data, aes(x=thy_status, y=value, fill = thy_status)) +
 boxplot <- boxplot + stat_compare_means(comparisons = my_comparisons, method = "t.test",
                                         paired = TRUE, size = 2,
                                         symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
-                                                           symbols = c("****","***", "***", "ns"))) +
+                                                           symbols = c("****","***", "**", "ns"))) +
     theme(strip.background = element_rect(fill = FALSE))
 
 boxplot + 
@@ -32,7 +32,7 @@ v_plot <- ggplot(tidy_data, aes(x=thy_status, y=value, fill = thy_status)) +
 v_plot <- v_plot + stat_compare_means(comparisons = my_comparisons, method = "t.test",
                                       paired = TRUE, size = 2,
                                       symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
-                                                         symbols = c("****","***", "***", "ns"))) +
+                                                         symbols = c("****","***", "**", "ns"))) +
     theme(strip.background = element_rect(fill = FALSE))
 
 v_plot + 

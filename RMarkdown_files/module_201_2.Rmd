@@ -1,7 +1,7 @@
 ---
-title: "R for Biochemists 201 Module 2 - A multi-panel figure with p-values"
+title: "R for Biochemists 201 Module 2 - Calculating and adding p-values"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "October 2020"
+date: "Aug 2021"
 output: 
    html_document
 #   word_document: default
@@ -10,12 +10,22 @@ output:
 
 ### Welcome to the second R for Biochemists 201 Training module.
 
-The teaching materials in this module are designed to take approximately 60
-minutes to work through. The exercises may take quite a bit longer as the
-material is getting more complex.Please be patient with yourself.
-Take breaks as you need. Completing all of this in a single sitting is probably
-not wise. The material provided includes text to read, video demonstrations,
+
+In Module 1, we have consolidated some of our R skills, gained an
+understanding of tidy data and learnt how to create some more complex plots.
+In Module 2, we will look at calculating some simple statistics and adding
+the statistics to a multipanel plot. Again we seek to revisit and deepen
+the skills from R for Biochemists 101. 
+
+Our exercises are more demanding so please allow a little more time
+to complete the material. In our pilot, learners took a little over 2 hours
+to complete this module. Please don't worry if it takes you longer.
+Rather be patient with yourself and try to keep learning. Take a break as 
+you need and ask questions if you need help. 
+
+As before, the material provided includes text to read, video demonstrations,
 example R scripts with exercises. We hope you enjoy the module.
+
 We welcome feedback and comments.
 
 ### How to use this module 
@@ -359,7 +369,7 @@ Replace the numbers with stars to indicate significance.
 plot <- plot + stat_compare_means(comparisons = my_comparisons, method = "t.test",
         paired = TRUE, size = 2,
         symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
-            symbols = c("****","***", "***", "ns"))) +
+            symbols = c("****","***", "**", "ns"))) +
     theme(strip.background = element_rect(fill = FALSE))
 
 # show the object
@@ -416,7 +426,7 @@ boxplot <- ggplot(tidy_data, aes(x=thy_status, y=value, fill = thy_status)) +
 boxplot <- boxplot + stat_compare_means(comparisons = my_comparisons, method = "t.test",
                                   paired = TRUE, size = 2,
                                   symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
-                                                     symbols = c("****","***", "***", "ns"))) +
+                                                     symbols = c("****","***", "**", "ns"))) +
     theme(strip.background = element_rect(fill = FALSE))
 
 boxplot + 
@@ -438,7 +448,7 @@ v_plot <- ggplot(tidy_data, aes(x=thy_status, y=value, fill = thy_status)) +
 v_plot <- v_plot + stat_compare_means(comparisons = my_comparisons, method = "t.test",
                                         paired = TRUE, size = 2,
                                         symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
-                                                           symbols = c("****","***", "***", "ns"))) +
+                                                           symbols = c("****","***", "**", "ns"))) +
     theme(strip.background = element_rect(fill = FALSE))
 
 v_plot + 
@@ -506,7 +516,7 @@ p1 <- ggplot(data = tidy_data_2, aes(x=DTR_status, y=value)) +
     stat_compare_means(comparisons = my_comparisons, method = "t.test",
                  paired = TRUE, size = 3,
                  symnum.args = list(cutpoints = c(0,0.0001,0.005,0.001, 1), 
-                                   symbols = c("****","***", "***", "ns"))) +
+                                   symbols = c("****","***", "**", "ns"))) +
     theme_classic2() +
     theme(strip.background = element_rect(fill = FALSE)) +
     facet_wrap(~names, scales ="free_y", ncol = 2)

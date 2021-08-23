@@ -11,9 +11,9 @@ output:
 
 ### Welcome to the first R for Biochemists 201 Training module.
 With R201, our material is more advanced and it may take you a while to
-complete. In our pilot, learners took approximately 90 minutes to complete this
-module. Please don't worry if it takes you longer. Rather be patient with 
-yourself and try to keep learning.  
+complete. In our pilot, learners took approximately 90 minutes to complete
+this module. Please don't worry if it takes you longer. Rather be patient
+with yourself and try to keep learning.  
 
 The material provided includes text to read, video demonstrations, an
 example R script with exercise. We hope you enjoy the modules. We welcome
