@@ -10,7 +10,6 @@ output:
 
 ### Welcome to the second R for Biochemists 201 Training module.
 
-
 In Module 1, we have consolidated some of our R skills, gained an
 understanding of tidy data and learnt how to create some more complex plots.
 In Module 2, we will look at calculating some simple statistics and adding

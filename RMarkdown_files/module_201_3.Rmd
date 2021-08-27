@@ -1,7 +1,7 @@
 ---
 title: "R for Biochemists 201 Module 3 - Using R Markdown for reproducible data analysis"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "January 2021"
+date: "Aug 2021"
 output:
   html_document:
     df_print: paged
@@ -11,13 +11,11 @@ output:
 
 ### Welcome to the third R for Biochemists 201 Training module.
 
-The teaching materials in this module are designed to take approximately 60
-minutes to work through. The exercises may take quite a bit longer as the
-material is getting more complex. Please be patient with yourself.
-Take breaks as you need. Completing all of this in a single sitting is probably
-not wise. The material provided includes text to read, video demonstrations,
-example R scripts with exercises. We hope you enjoy the module.
-We welcome feedback and comments.
+This module goes in a slightly different direction. We are going to talk about
+a way to integrate text and code to try to make your analysis more reproducible.
+In our pilot, learners took about 2 hours to complete this module. Please don't
+worry if it takes you longer. Rather be patient with yourself and try to keep
+learning. Take a break as you need and ask questions if you need help. 
 
 ### How to use this module 
 1. To learn from this module, watch the video and open a new R Markdown file. 
