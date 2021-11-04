@@ -1,14 +1,14 @@
 ---
 title: "R for Biochemists 201 Module 2 - Calculating and adding p-values"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "Aug 2021"
+date: "Nov 2021"
 output: 
    html_document
 #   word_document: default
 #  pdf_document: default
 ---
 
-### Welcome to the second R for Biochemists 201 Training module.
+### Welcome to module 2 for Biochemists 201 Training module.
 
 In Module 1, we have consolidated some of our R skills, gained an
 understanding of tidy data and learnt how to create some more complex plots.
