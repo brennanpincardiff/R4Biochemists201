@@ -57,7 +57,7 @@ by writing some functions.
 To create a function, we use the function() function. 
 Let's look at Croft Figure 4f.
 
-
+### Loading the packages we need
 ```{r packages_we_need, message=FALSE}
 library(readxl)
 library(dplyr)
@@ -272,7 +272,7 @@ annotate_figure(figure,
                 top = text_grob("Figure 4f from Croft et al (2019) Nature 570:246–251",
                 color = "red", face = "bold", size = 14))
 
-
+# this figure looks best on R-Studio at a width of 1000 and a height of 600
 ```
 
 
@@ -327,8 +327,36 @@ Above I hope that you created your own function to add the statistical tests.
 Please you add the documentation to that now.
 
 ### Answers for Exercise 2
-Here is my example...
+```{r roxygen_, eval=FALSE} 
 
+#' A workflow to create graphs for Figure 4f and add an ANOVA
+#' It uses the ggboxplot() from the ggpubr package
+#'
+#' @param data 
+#' @param a_cell_type 
+#'
+#' @return a ggplot object created by ggboxplot
+#'
+#' @examples
+#' 
+### this function is will add the ANOVA 
+### 
+stat_flow <- function(data, a_cell_type){
+    # select out the rows we want with filter() function
+    data %>% 
+        dplyr::filter(cell_type == a_cell_type) %>% 
+        dplyr::gather(cell_number, mice, -cell_type, -treatment)  %>%    
+        dplyr::mutate(treatment = factor(treatment, c("Sham_1",
+                                                      "THY-", 
+                                                      "Sham_2",
+                                                      "THY+"))) -> data_2
+    
+    ggpubr::ggboxplot(data_2, x = "treatment", y = "mice", add = "jitter",
+              xlab = "",
+              ylab = "") +
+        ggpubr::stat_compare_means(method = "anova")
+    }
+```
 
 ### Version control
 ##### Fourth video - version control on Github 
@@ -363,7 +391,9 @@ Github Repo with R-Studio and to allow you to make R-Studio work with
 repositories on Github. 
 
 This video shows you how to pull down a Github repo into R-Studio. 
-On Github, please fork the RforBiochemists201 repository so that you have your
+On Github, please fork the 
+[RforBiochemists201 repository](https://github.com/brennanpincardiff/R4Biochemists201)
+so that you have your
 own copy. Then please try create a project with your own RforBiochemists201
 repo through R Studio. The RforBiochemists201 repo has more files in it now
 than it did when I recorded this video. You may be able to make and COMMIT
@@ -540,6 +570,7 @@ packages you can get a feeling for how they
 are organised. Here is a little about how packages are structured. 
 
 Basic anatomy of a package on Github...
+
 * Readme
 * Build badge - passing is good.
 * R folder - has the code - you can look at this and adapt.
@@ -605,7 +636,8 @@ feature_to_dataframe(rel_json) -> rel_data
 draw_canvas(rel_data) -> p
 p <- draw_chains(p, rel_data)
 p <- draw_domains(p, rel_data)
-draw_regions(p, rel_data)
+p <- draw_regions(p, rel_data)
+p + theme(legend.position="bottom") 
 ```
 
 

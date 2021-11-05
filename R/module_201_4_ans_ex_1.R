@@ -37,10 +37,16 @@ p3 <- stat_flow(data, "Macrophages")
 figure <- ggarrange(p1, p2, p3, nrow=1,
           labels = c("A.Leucocytes",
                      "B.Neutrophils",
-                     "C.Macrophages"))
+                     "C.Macrophages"),
+          vjust=1)  # pushing labels above the plot
 
 # http://www.sthda.com/english/articles/24-ggpubr-publication-ready-plots/81-ggplot2-easy-way-to-mix-multiple-graphs-on-the-same-page/
 
 annotate_figure(figure, 
-                top = text_grob("Figure 4f from Croft et al (2019) Nature 570:246–251",
-                color = "red", face = "bold", size = 14))
+    top = text_grob("Figure 4f from Croft et al (2019) Nature 570:246–251",
+    color = "red", face = "bold", size = 14))
+
+# needs to be looked at width 1000 by height 600
+
+
+
