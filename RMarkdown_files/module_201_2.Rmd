@@ -1,10 +1,10 @@
 ---
-title: "R for Biochemists 201 Module 2 - Calculating and adding p-values"
+title: "R for Biochemists 201, Module 2, Calculating and adding p-values"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
 date: "Nov 2021"
 output: 
-   html_document
-#   word_document: default
+#   html_document
+   word_document: default
 #  pdf_document: default
 ---
 
@@ -43,7 +43,7 @@ then run the code line by line.
 * Add statistics to plots with the ggpubr package
 * Prepare a multi-panel figure with R
 
-#### Our packages
+### Loading the packages we need
 ```{r packages_we_need}
 library(tidyverse)
 library(readxl)

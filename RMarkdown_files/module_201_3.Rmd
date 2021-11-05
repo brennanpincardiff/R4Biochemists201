@@ -1,11 +1,11 @@
 ---
-title: "R for Biochemists 201 Module 3 - Using R Markdown for reproducible data analysis"
+title: "R for Biochemists 201, Module - Using R Markdown for reproducible data analysis"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "Aug 2021"
+date: "Nov 2021"
 output:
-  html_document:
-    df_print: paged
-  pdf_document: default
+#  html_document:
+#    df_print: paged
+#  pdf_document: default
   word_document: default
 ---
 

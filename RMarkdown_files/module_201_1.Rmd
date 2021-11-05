@@ -1,12 +1,12 @@
 ---
 title: "R for Biochemists 201 Module 1 - Tidy data and some advanced visualisations"
 author: "Paul Brennan, Cardiff University, BrennanP@cardiff.ac.uk"
-date: "Aug 2021"
+date: "Nov 2021"
 output:
-  html_document:
-    df_print: paged
+#  html_document:
+#    df_print: paged
 #  pdf_document: default
-#  word_document: default
+  word_document: default
 ---
 
 ### Welcome to the first R for Biochemists 201 Training module.
@@ -35,6 +35,7 @@ feedback and comments.
 * Create bar plots, box & whisker plots and violin plots with ggplot2
 
 
+### Loading the packages we need
 ```{r packages_we_need}
 library(readxl)
 library(dplyr)
@@ -55,6 +56,7 @@ the data.
 
 There are examples in the video of "untidy" in Excel. 
 
+###### Code for loading and tidying data
 ```{r data_for_tidying}
 # first example - relatively simple
 link <- "https://github.com/brennanpincardiff/RforBiochemists/raw/master/data/Viability_data_example_R201_20200722_for_tidying.xls"
@@ -176,6 +178,7 @@ specific package called
 [magrittr](https://cran.r-project.org/web/packages/magrittr/vignettes/magrittr.html). 
 Pipes are explained in more detail later.
 
+###### Import data for Fig 1b
 ```{r get_data_for_Fig_1b}
 link <- "https://static-content.springer.com/esm/art%3A10.1038%2Fs41586-019-1263-7/MediaObjects/41586_2019_1263_MOESM8_ESM.xlsx"
 
